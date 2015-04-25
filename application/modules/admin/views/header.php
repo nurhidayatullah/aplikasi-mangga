@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
 	<head>
 		<meta charset="utf-8"/>
-		<title>Metronic | Admin Dashboard Template</title>
+		<title>Admin Dashboard</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
 		<meta content="" name="description"/>
@@ -25,6 +25,7 @@
 		<link href="<?php echo $this->config->item('theme_url');?>admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
 		<link href="<?php echo $this->config->item('theme_url');?>admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css" id="style_color"/>
 		<link href="<?php echo $this->config->item('theme_url');?>admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+		<link href="<?php echo $this->config->item('theme_url');?>global/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<!-- END THEME STYLES -->
 		<link rel="shortcut icon" href="favicon.ico"/>
 	</head>

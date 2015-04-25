@@ -31,6 +31,7 @@
 		<script src="<?php echo $this->config->item('theme_url');?>global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
 		<!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
 		<script src="<?php echo $this->config->item('theme_url');?>global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+
 		<!-- END PAGE LEVEL PLUGINS -->
 		<!-- BEGIN PAGE LEVEL SCRIPTS -->
 		<script src="<?php echo $this->config->item('theme_url');?>global/scripts/metronic.js" type="text/javascript"></script>
@@ -39,6 +40,8 @@
 		<script src="<?php echo $this->config->item('theme_url');?>admin/layout/scripts/demo.js" type="text/javascript"></script>
 		<script src="<?php echo $this->config->item('theme_url');?>admin/pages/scripts/index.js" type="text/javascript"></script>
 		<script src="<?php echo $this->config->item('theme_url');?>admin/pages/scripts/tasks.js" type="text/javascript"></script>
+		<script src="<?php echo $this->config->item('theme_url');?>admin/pages/scripts/table-managed.js"></script>
+
 		<!-- END PAGE LEVEL SCRIPTS -->
 		<script>
 		jQuery(document).ready(function() {    
@@ -46,14 +49,27 @@
 		   Layout.init(); // init layout
 		   QuickSidebar.init(); // init quick sidebar
 		   Demo.init(); // init demo features 
-		   Index.init();   
-		   Index.initDashboardDaterange();
-		   Index.initJQVMAP(); // init index page's custom scripts
-		   Index.initCalendar(); // init index page's custom scripts
-		   Index.initCharts(); // init index page's custom scripts
-		   Index.initChat();
-		   Index.initMiniCharts();
+		   Index.init(); 
 		   Tasks.initDashboardWidget();
+		});
+		</script>
+		<script src="<?php echo $this->config->item('theme_url');?>global/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+		<script src="<?php echo $this->config->item('theme_url');?>global/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		$(function() {
+			$("#tb").dataTable({
+				"oLanguage": {
+						   "sLengthMenu": 'Display <select class="form-control">'+ 
+							 '<option value="1">1</option>'+
+							'<option value="10">10</option>'+
+							'<option value="20">20</option>'+
+							'<option value="30">30</option>'+
+							'<option value="40">40</option>'+
+							'<option value="50">50</option>'+
+							'<option value="-1">All</option>'+
+							'</select> records'
+						}
+			});
 		});
 		</script>
 		<!-- END JAVASCRIPTS -->
