@@ -1,8 +1,4 @@
-<?php $this->load->view('admin/header'); ?>
-		<?php $this->load->view('admin/navbar'); ?>
-		<div class="clearfix"></div>
-		<div class="page-container">
-			<?php $this->load->view('admin/sidebar_menu'); ?>
+
 			<div class="page-content-wrapper">
 				<div class="page-content">
 					<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

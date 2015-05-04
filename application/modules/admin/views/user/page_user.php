@@ -1,26 +1,9 @@
 
 			<div class="page-content-wrapper">
 				<div class="page-content">
-					<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-									<h4 class="modal-title">Modal title</h4>
-								</div>
-								<div class="modal-body">
-									 Widget settings form goes here
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn blue">Save changes</button>
-									<button type="button" class="btn default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-						</div>
-					</div>
 					<!-- BEGIN PAGE HEADER-->
 					<h3 class="page-title">
-					Dashboard <small>Group</small>
+					Dashboard <small>User</small>
 					</h3>
 					<div class="page-bar">
 						<ul class="page-breadcrumb">
@@ -30,7 +13,7 @@
 								<i class="fa fa-angle-right"></i>
 							</li>
 							<li>
-								<a href="#">Group</a>
+								<a href="#">User</a>
 							</li>
 						</ul>
 					</div>
@@ -40,7 +23,7 @@
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<div class="portlet box green-haze tasks-widget">
 								<div class="portlet-title">
-									<div class="caption">Data Group</div>
+									<div class="caption">Data User</div>
 									<div class="tools">
 										<a href="javascript:;" class="fullscreen">
 										</a>
@@ -51,7 +34,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="btn-group">
-													<a href="<?php echo base_url('admin/group/new_data/');?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
+													<a href="<?php echo base_url('admin/user/new_data/');?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
 												</div>
 												<?php if(!empty($msg)){ 
 												if($msg==0){
@@ -84,21 +67,33 @@
 										<thead>
 											<tr>
 												<th>No.</th>
-												<th>Nama Group</th>
+												<th>First Name</th>
+												<th>Last Name</th>
+												<th>Email</th>
+												<th>Password</th>
+												<th>Group</th>
 												<th>Date Create</th>
+												<th>Status</th>
 												<th>Action</th>
 											</tr>
 										</thead>
 										<tbody>
-										<?php if(isset($group)){
+										<?php if(isset($user)){
 											$i=1;
-											foreach($group as $data){
+											foreach($user as $data){
 												?>
 											<tr>
 												<td><?php echo $i;?></td>
+												<td><?php echo $data['first_name'];?></td>
+												<td><?php echo $data['last_name'];?></td>
+												<td><?php echo $data['email'];?></td>
+												<td><?php echo $data['password'];?></td>
 												<td><?php echo $data['nama_group'];?></td>
 												<td class="center"><?php echo $data['create_at'];?></td>
-												<td><a href="<?php echo base_url('admin/group/edit/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;<a href="<?php echo base_url('admin/group/hapus/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+												<td>
+												<?php $status=$data['active'] ==1 ? 'checked' : '';?>
+												<input type="checkbox" id="ch-<?php echo $i;?>" <?php echo $status;?> onclick="actived('<?php echo $i;?>','<?php echo $this->my_encrypt->encode($data['kode_user']);?>')">Active</td>
+												<td><a href="<?php echo base_url('admin/user/edit/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;<a href="<?php echo base_url('admin/user/hapus/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
 											</tr>
 											<?php $i++;
 											}
@@ -115,4 +110,16 @@
 				</div>
 			</div>
 		</div>
+		<script>
+		function actived(iid,id){
+			var value = $('#ch-'+iid+':checked').val()?1:0;
+			$.ajax({
+				url:"<?php echo base_url();?>admin/user/actived/"+id+"/"+value,
+				type:"GET",
+				success:function(data){
+					
+				}
+			});
+		};
+		</script>
 <?php $this->load->view('admin/footer');

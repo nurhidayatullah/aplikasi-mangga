@@ -1,6 +1,6 @@
 <?php
 class My_encrypt {
-	var $skey 	= "SuPerEncKey2010"; // you can change it
+	var $skey 	= "nurhidayatullah1"; // you can change it
 	
     public  function safe_b64encode($string) {
 	

@@ -8,6 +8,10 @@ class Group extends CI_Controller {
 		$this->load->library('my_encrypt');
 		$this->load->model('admin/group_model');
 		$this->load->helper('security');
+		$this->load->view('admin/header');
+		$this->load->view('admin/navbar');
+		$this->load->model('admin/menu_model');
+		$this->load->view('admin/sidebar_menu');
 	}
 	public function index($msg=''){
 		$data['msg'] = $msg;

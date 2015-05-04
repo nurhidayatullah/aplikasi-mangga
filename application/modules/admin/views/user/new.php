@@ -1,23 +1,6 @@
 
 			<div class="page-content-wrapper">
 				<div class="page-content">
-					<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-									<h4 class="modal-title">Modal title</h4>
-								</div>
-								<div class="modal-body">
-									 Widget settings form goes here
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn blue">Save changes</button>
-									<button type="button" class="btn default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-						</div>
-					</div>
 					<!-- BEGIN PAGE HEADER-->
 					<h3 class="page-title">
 					Dashboard <small>Group</small>
@@ -51,16 +34,34 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="btn-group">
-													<a href="<?php echo base_url('admin/group/');?>" class="btn btn-danger">Cancel <i class="fa fa-mail-reply"></i></a>
+													<a href="<?php echo base_url('admin/user/');?>" class="btn btn-danger">Cancel <i class="fa fa-mail-reply"></i></a>
 												</div>
 											</div>
 										</div>
 									</div>
-									<form class="" method="post" role="form" action="<?php echo base_url('admin/group/save/');?>">
+									<form class="" method="post" role="form" action="<?php echo base_url('admin/user/save/');?>">
 										<div class="form-group">
-											<label for="nama">Nama Group
-											<input class="form-control" type="text" name="nama" required />
-										</div></hr>
+											<label for="first_name">First Name
+											<input class="form-control" type="text" name="first_name" required />
+										</div>
+										<div class="form-group">
+											<label for="last_name">Last Name
+											<input class="form-control" type="text" name="last_name" required />
+										</div>
+										<div class="form-group">
+											<label for="email">Email
+											<input class="form-control" type="email" name="email" required />
+										</div>
+										<div class="form-group">
+											<label for="last_name">Group
+											<select class="form-control" name="group">
+											<?php if(!empty($group)){
+												foreach($group as $data){ ?>
+												<option value="<?php echo $data['kode_group'];?>"><?php echo $data['nama_group'];?></option>
+												<?php }
+											}?>
+											</select>
+										</div>
 										<div class="form-group">
 										  <button type="submit" class="btn btn-success">Submit <i class="fa fa-download"></i></button>
 										</div>
