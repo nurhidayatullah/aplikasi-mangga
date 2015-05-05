@@ -42,7 +42,12 @@
 						$submenu = $this->menu_model->get_menu($data['kode_menu']);
 						foreach($submenu as $subdata){
 						?>
-						<li><a href="<?php echo base_url($subdata['controller']);?>"><?php echo $subdata['nama_menu'];?></a></li>
+						<li>
+							<a href="<?php echo base_url($subdata['controller']);?>">
+								<span class="fa fa-sign-in"></span>
+								<?php echo $subdata['nama_menu'];?>
+							</a>
+						</li>
 						<?php 
 						}
 						?>

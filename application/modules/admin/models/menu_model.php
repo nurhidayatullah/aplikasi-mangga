@@ -10,5 +10,17 @@ class menu_model extends CI_Model {
 		}
 		return NULL;
 	}
+	function All(){
+		$query = $this->db->get('menu');
+		if($query->row_array()>0){
+			return $query->result_array();
+		}
+		return NULL;
+	}
+	function delete($id){
+		$this->db->where('kode_menu',$id);
+		$this->db->delete('menu'); 
+		return (($this->db->affected_rows()>0)?TRUE:FALSE);
+	}
 }
 ?>
