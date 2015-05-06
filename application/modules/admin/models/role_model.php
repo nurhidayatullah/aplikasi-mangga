@@ -18,5 +18,9 @@ class role_model extends CI_Model {
 		$this->db->update('role',$data);
 		return (($this->db->affected_rows()>0)?TRUE:FALSE);
 	}
+	function save($data) {
+        $this->db->insert('role', $data);
+        return (($this->db->affected_rows()>0)?TRUE:FALSE);
+    }
 }
 ?>

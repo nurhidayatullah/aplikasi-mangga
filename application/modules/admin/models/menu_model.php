@@ -20,7 +20,15 @@ class menu_model extends CI_Model {
 	function delete($id){
 		$this->db->where('kode_menu',$id);
 		$this->db->delete('menu'); 
-		return (($this->db->affected_rows()>0)?TRUE:FALSE);
+	}
+	function save($data){
+		$this->db->insert('menu', $data);
+		if($this->db->affected_rows()>0){
+			$query = $this->db->query('SELECT kode_menu FROM menu order by kode_menu desc LIMIT 1');
+			$row = $query->row();
+			return $row->kode_menu;
+		}
+		return NULL;
 	}
 }
 ?>
