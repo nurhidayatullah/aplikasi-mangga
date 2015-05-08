@@ -34,7 +34,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="btn-group">
-													<a href="<?php echo base_url('admin/user/');?>" class="btn btn-danger">Cancel <i class="fa fa-mail-reply"></i></a>
+													<a href="<?php echo base_url('admin/user/index/'.$menu);?>" class="btn btn-danger">Cancel <i class="fa fa-mail-reply"></i></a>
 												</div>
 											</div>
 										</div>
@@ -43,6 +43,7 @@
 										<div class="form-group">
 											<label for="first_name">First Name
 											<input class="form-control" type="text" name="first_name" required />
+											<input type="hidden" name="menu" value="<?php echo $menu;?>" required />
 										</div>
 										<div class="form-group">
 											<label for="last_name">Last Name

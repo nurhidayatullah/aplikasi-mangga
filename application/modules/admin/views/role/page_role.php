@@ -66,13 +66,13 @@
 												?>
 												<td><input type="checkbox" name="delete"<?php echo $status;?> id="view-<?php echo $i;?>" class="form-control" onclick="view(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')" value="1"/>Enable</td>
 												<td>
-												<?php $add=$data['add'] ==1 ? 'checked' : '';?>
+												<?php $add=$data['itambah'] ==1 ? 'checked' : '';?>
 												<input type="checkbox" name="add" class="form-control" id="add-<?php echo $i;?>" <?php echo $read;echo $add;?> onclick="add(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable</td>
 												<td>
-												<?php $edit=$data['edit'] ==1 ? 'checked' : '';?>
+												<?php $edit=$data['iupdate'] ==1 ? 'checked' : '';?>
 												<input type="checkbox" name="edit" class="form-control" id="edit-<?php echo $i;?>"<?php echo $read;echo $edit;?> onclick="edit(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable</td>
 												<td>
-												<?php $delete=$data['delete'] ==1 ? 'checked' : '';?>
+												<?php $delete=$data['idelete'] ==1 ? 'checked' : '';?>
 												<input type="checkbox" name="delete" class="form-control" id="delete-<?php echo $i;?>"<?php echo $read;echo $delete;?> onclick="del(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable</td>
 											</tr>
 											<?php $i++;
@@ -127,7 +127,7 @@
 				url:"<?php echo base_url();?>admin/role/view/"+role+"/"+value,
 				type:"GET",
 				success:function(data){
-					if(data==0){
+					if(value==0){
 						$('#add-'+id).attr('readonly',true);
 						$('#delete-'+id).attr('readonly',true);
 						$('#edit-'+id).attr('readonly',true);

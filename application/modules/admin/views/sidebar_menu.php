@@ -28,7 +28,7 @@
 						</a>
 					</li>
 					<?php 
-					$menu = $this->menu_model->get_menu(0);
+					$menu = $this->menu_model->get_menu(0,$this->session->userdata('kode_group'));
 					foreach($menu as $data){
 					?>
 					<li>
@@ -39,11 +39,11 @@
 						</a>
 						<ul class="sub-menu">
 						<?php
-						$submenu = $this->menu_model->get_menu($data['kode_menu']);
+						$submenu = $this->menu_model->get_menu($data['kode_menu'],$this->session->userdata('kode_group'));
 						foreach($submenu as $subdata){
 						?>
 						<li>
-							<a href="<?php echo base_url($subdata['controller']);?>">
+							<a href="<?php echo base_url($subdata['controller']."/".$subdata['kode_menu']);?>">
 								<span class="fa fa-sign-in"></span>
 								<?php echo $subdata['nama_menu'];?>
 							</a>

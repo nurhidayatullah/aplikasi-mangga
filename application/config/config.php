@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/aplikasi-mangga/';
-$config['theme_url']    ='http://localhost/aplikasi-mangga/assets/';
+$config['base_url']	= 'http://nur_hidayat-pc/aplikasi-mangga/';
+$config['theme_url']    ='http://nur_hidayat-pc/aplikasi-mangga/assets/';
 /*
 |--------------------------------------------------------------------------
 | Index File

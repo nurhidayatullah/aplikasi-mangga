@@ -1,4 +1,9 @@
-
+<?php foreach($data as $d){
+	$kode = $d['kode_menu'];
+	$nama = $d['nama_menu'];
+	$controller = $d['controller'];
+	$parent = $d['kode_parent'];
+}?>
 	<div class="page-content-wrapper">
 		<div class="page-content">
 			<!-- BEGIN PAGE HEADER-->
@@ -23,7 +28,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="portlet box green-haze tasks-widget">
 						<div class="portlet-title">
-							<div class="caption">New Data Menu</div>
+							<div class="caption">Edit Data Menu</div>
 							<div class="tools">
 								<a href="javascript:;" class="fullscreen">
 								</a>
@@ -39,19 +44,25 @@
 									</div>
 								</div>
 							</div>
-							<form class="" method="post" role="form" action="<?php echo base_url('admin/menu/save/');?>">
+							<form class="" method="post" role="form" action="<?php echo base_url('admin/menu/update/');?>">
 								<div class="form-group">
 									<label for="nama">Nama Menu
-									<input class="form-control" type="text" name="nama" required />
+									<input class="form-control" type="text" name="nama" value="<?php echo $nama;?>" required />
 									<input type="hidden" name="url" value="<?php echo $url;?>" required />
+									<input type="hidden" name="kode" value="<?php echo $kode;?>" required />
 								</div>
 								<div class="form-group">
 									<label for="nama">Controller
-									<input class="form-control" type="text" name="controller"/>
+									<input class="form-control" type="text" name="controller" value="<?php echo $controller;?>"/>
 								</div>
 								<div class="form-group">
 									<label for="child">Child Menu
-									<input class="form-control" type="checkbox" name="child" id="child" />
+									<?php if($parent!=0){
+										$ch = "checked";
+									}else{
+										$ch = "";
+									}?>
+									<input class="form-control" type="checkbox" <?php echo $ch;?> name="child" id="child" />
 								</div>
 								<div class="form-group" id="parent">
 									<label for="parent">Parent
@@ -79,7 +90,13 @@
 <?php $this->load->view('admin/footer');?>
 <script>
 $(function(){
-	$('#parent').hide();
+	var x = parseInt('<?php echo $parent;?>');
+	if(x!=0){
+		$('#parent').show();
+	}else{
+		$('#parent').hide();
+	}
+	
 	$('#child').click(function(){
 		var value = $('#child:checked').val()?1:0;
 		if(value==1){

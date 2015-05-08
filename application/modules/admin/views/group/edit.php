@@ -55,7 +55,7 @@ foreach($group as $data){
 										<div class="row">
 											<div class="col-md-6">
 												<div class="btn-group">
-													<a href="<?php echo base_url('admin/group/');?>" class="btn btn-danger">Cancel <i class="fa fa-mail-reply"></i></a>
+													<a href="<?php echo base_url('admin/group/index/'.$menu);?>" class="btn btn-danger">Cancel <i class="fa fa-mail-reply"></i></a>
 												</div>
 											</div>
 										</div>
@@ -64,6 +64,7 @@ foreach($group as $data){
 										<div class="form-group">
 											<label for="nama">Nama Group
 											<input class="form-control" type="text" name="nama" value="<?php echo $nama;?>" required />
+											<input type="hidden" name="menu" value="<?php echo $menu;?>" required />
 										</div></hr>
 										<div class="form-group">
 										  <button type="submit" class="btn btn-success">Submit <i class="fa fa-download"></i></button>

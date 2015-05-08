@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class User extends CI_Controller {
-
 	function __construct(){
         parent::__construct();
 		$this->load->helper('url');
@@ -9,17 +8,26 @@ class User extends CI_Controller {
 		$this->load->model('admin/group_model');
 		$this->load->model('admin/user_model');
 		$this->load->helper('security');
+		$this->load->library('session');
+		$this->load->model('login');
+		$this->loged = $this->login->ceck_login();
+		if(!$this->loged){
+			redirect(base_url('admin/login'));
+		}
 		$this->load->view('admin/header');
 		$this->load->view('admin/navbar');
 		$this->load->model('admin/menu_model');
 		$this->load->view('admin/sidebar_menu');
 	}
-	public function index($msg=''){
+	public function index($menu='',$msg=''){
+		$data['menu'] = $menu;
+		$data['priv'] = $this->menu_model->get_priv($menu,$this->session->userdata('kode_group'));
 		$data['msg'] = $this->my_encrypt->decode($msg);
 		$data['user'] = $this->user_model->All();
 		$this->load->view('admin/user/page_user',$data);
 	}
-	function new_data(){
+	function new_data($menu=''){
+		$data['menu'] = $menu;
 		$data['group'] = $this->group_model->All();
 		$this->load->view('admin/user/new',$data);
 	}
@@ -29,10 +37,11 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('last_name', 'Last Name', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('email', 'Email', 'required|trim|xss_clean|valid_email');
 		$this->form_validation->set_rules('group', 'Group', 'required');
+		$menu = $this->input->post('menu');
 		if ($this->form_validation->run() == FALSE) { 
 			$pesan['pesan'] = "error input : ".validation_errors();
 			$pesan['jenis'] = $this->my_encrypt->encode(0);
-			redirect(base_url('admin/group/index/'.$pesan));
+			redirect(base_url('admin/user/index/'.$menu."/".$pesan));
 		}else{
 			$data['first_name'] = $this->input->post('first_name');
 			$data['last_name'] = $this->input->post('last_name');
@@ -44,29 +53,31 @@ class User extends CI_Controller {
 			$result = $this->user_model->save($data); 
 			if($result){
 				$pesan = $this->my_encrypt->encode(1);
-				redirect(base_url('admin/user/index/'.$pesan));
+				redirect(base_url('admin/user/index/'.$menu."/".$pesan));
 			}else{
 				$pesan = $this->my_encrypt->encode(0);
-				redirect(base_url('admin/user/index/'.$pesan));
+				redirect(base_url('admin/user/index/'.$menu."/".$pesan));
 			}
 		}
 	}
-	public function edit($id=''){
+	public function edit($menu='',$id=''){
 		if($this->security->xss_clean($id)){
+			$data['menu'] = $menu;
 			$data['user'] = $this->user_model->find($this->my_encrypt->decode($id));
 			$data['group'] = $this->group_model->All();
 			$this->load->view('admin/user/edit',$data);
 		}
 	}
-	public function hapus($id=''){
+	public function hapus($menu='',$id=''){
 		if($this->security->xss_clean($id)){
 			$result = $this->user_model->delete($this->my_encrypt->decode($id));
+			$data['menu'] = $menu;
 			if($result){
 				$pesan = $this->my_encrypt->encode(1);
-				redirect(base_url('admin/user/index/'.$pesan));
+				redirect(base_url('admin/user/index/'.$data['menu']."/".$pesan));
 			}else{
 				$pesan = $this->my_encrypt->encode(0);
-				redirect(base_url('admin/user/index/'.$pesan));
+				redirect(base_url('admin/user/index/'.$data['menu']."/".$pesan));
 			}
 		}
 	}
@@ -88,10 +99,11 @@ class User extends CI_Controller {
 			$this->form_validation->set_rules('last_name', 'Last Name', 'required|trim|xss_clean');
 			$this->form_validation->set_rules('email', 'Email', 'required|trim|xss_clean|valid_email');
 			$this->form_validation->set_rules('group', 'Group', 'required');
+			$menu = $this->input->post('menu');
 			if ($this->form_validation->run() == FALSE) { 
 				$pesan['pesan'] = "error input : ".validation_errors();
 				$pesan['jenis'] = 0;
-				redirect(base_url('admin/group/index/'.$pesan));
+				redirect(base_url('admin/user/index/'.$menu.'/'.$pesan));
 			}else{
 				$data['kode_user'] = $id;
 				$data['first_name'] = $this->input->post('first_name');
@@ -102,10 +114,10 @@ class User extends CI_Controller {
 				$result = $this->user_model->update($data); 
 				if($result){
 					$pesan = $this->my_encrypt->encode(1);
-					redirect(base_url('admin/user/index/'.$pesan));
+					redirect(base_url('admin/user/index/'.$menu.'/'.$pesan));
 				}else{
 					$pesan = $this->my_encrypt->encode(0);
-					redirect(base_url('admin/user/index/'.$pesan));
+					redirect(base_url('admin/user/index/'.$menu.'/'.$pesan));
 				}
 			}
 		}

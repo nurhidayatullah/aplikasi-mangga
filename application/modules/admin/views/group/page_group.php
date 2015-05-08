@@ -1,4 +1,8 @@
-
+<?php foreach($priv as $akses){
+	$tambah = $akses['itambah'];
+	$edit = $akses['iupdate'];
+	$hapus = $akses['idelete'];
+}?>
 			<div class="page-content-wrapper">
 				<div class="page-content">
 					<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -50,9 +54,11 @@
 									<div class="table-toolbar">
 										<div class="row">
 											<div class="col-md-6">
+											<?php if($tambah){?>
 												<div class="btn-group">
-													<a href="<?php echo base_url('admin/group/new_data/');?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
+													<a href="<?php echo base_url('admin/group/new_data/'.$menu);?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
 												</div>
+											<?php } ?>
 												<?php if(!empty($msg)){ 
 												if($msg==0){
 													?>
@@ -98,7 +104,14 @@
 												<td><?php echo $i;?></td>
 												<td><?php echo $data['nama_group'];?></td>
 												<td class="center"><?php echo $data['create_at'];?></td>
-												<td><a href="<?php echo base_url('admin/group/edit/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;<a href="<?php echo base_url('admin/group/hapus/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+												<td>
+												<?php if($edit){?>
+													<a href="<?php echo base_url('admin/group/edit/'.$menu.'/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
+												<?php } 
+												if($hapus){
+												?>
+													<a href="<?php echo base_url('admin/group/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+												<?php } ?>
 											</tr>
 											<?php $i++;
 											}

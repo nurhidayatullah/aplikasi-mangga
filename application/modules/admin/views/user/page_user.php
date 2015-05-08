@@ -1,4 +1,8 @@
-
+<?php foreach($priv as $akses){
+	$tambah = $akses['itambah'];
+	$edit = $akses['iupdate'];
+	$hapus = $akses['idelete'];
+}?>
 			<div class="page-content-wrapper">
 				<div class="page-content">
 					<!-- BEGIN PAGE HEADER-->
@@ -34,7 +38,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="btn-group">
-													<a href="<?php echo base_url('admin/user/new_data/');?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
+													<a href="<?php echo base_url('admin/user/new_data/'.$menu);?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
 												</div>
 												<?php if(!empty($msg)){ 
 												if($msg==0){
@@ -93,7 +97,14 @@
 												<td>
 												<?php $status=$data['active'] ==1 ? 'checked' : '';?>
 												<input type="checkbox" id="ch-<?php echo $i;?>" <?php echo $status;?> onclick="actived('<?php echo $i;?>','<?php echo $this->my_encrypt->encode($data['kode_user']);?>')">Active</td>
-												<td><a href="<?php echo base_url('admin/user/edit/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;<a href="<?php echo base_url('admin/user/hapus/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+												<td>
+												<?php if($edit){?>
+													<a href="<?php echo base_url('admin/user/edit/'.$menu.'/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
+												<?php } 
+												if($hapus){
+												?>	
+													<a href="<?php echo base_url('admin/user/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+												<?php } ?>
 											</tr>
 											<?php $i++;
 											}

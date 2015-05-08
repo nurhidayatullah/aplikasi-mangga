@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Metronic | Login Options - Login Form 4</title>
+<title>Aplikasi Manga | Login </title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -46,19 +46,20 @@
 <!-- BEGIN LOGIN -->
 <div class="content">
 	<!-- BEGIN LOGIN FORM -->
-	<form class="login-form" action="index.html" method="post">
+	<form class="login-form" action="<?php echo base_url('admin/do_login');?>" method="post">
 		<h3 class="form-title">Login to your account</h3>
-		<div class="alert alert-danger display-hide">
+		<?php if(!empty($msg)){?>
+		<div class="alert alert-danger">
 			<button class="close" data-close="alert"></button>
-			<span>
-			Enter any username and password. </span>
+			<span><?php echo $msg;?></span>
 		</div>
+		<?php } ?>
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-			<label class="control-label visible-ie8 visible-ie9">Username</label>
+			<label class="control-label visible-ie8 visible-ie9">Email</label>
 			<div class="input-icon">
 				<i class="fa fa-user"></i>
-				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+				<input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Your Email" name="email"/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -69,68 +70,17 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<label class="checkbox">
-			<input type="checkbox" name="remember" value="1"/> Remember me </label>
 			<button type="submit" class="btn blue pull-right">
 			Login <i class="m-icon-swapright m-icon-white"></i>
 			</button>
 		</div>
-		<div class="login-options">
-			<h4>Or login with</h4>
-			<ul class="social-icons">
-				<li>
-					<a class="facebook" data-original-title="facebook" href="#">
-					</a>
-				</li>
-				<li>
-					<a class="twitter" data-original-title="Twitter" href="#">
-					</a>
-				</li>
-				<li>
-					<a class="googleplus" data-original-title="Goole Plus" href="#">
-					</a>
-				</li>
-				<li>
-					<a class="linkedin" data-original-title="Linkedin" href="#">
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div class="forget-password">
-			<h4>Forgot your password ?</h4>
-			<p>
-				 no worries, click <a href="javascript:;" id="forget-password">
-				here </a>
-				to reset your password.
-			</p>
-		</div>
 	</form>
 	<!-- END LOGIN FORM -->
-	<!-- BEGIN FORGOT PASSWORD FORM -->
-	<form class="forget-form" action="index.html" method="post">
-		<h3>Forget Password ?</h3>
-		<p>
-			 Enter your e-mail address below to reset your password.
-		</p>
-		<div class="form-group">
-			<div class="input-icon">
-				<i class="fa fa-envelope"></i>
-				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
-			</div>
-		</div>
-		<div class="form-actions">
-			<button type="button" id="back-btn" class="btn">
-			<i class="m-icon-swapleft"></i> Back </button>
-			<button type="submit" class="btn blue pull-right">
-			Submit <i class="m-icon-swapright m-icon-white"></i>
-			</button>
-		</div>
-	</form>
 </div>
 <!-- END LOGIN -->
 <!-- BEGIN COPYRIGHT -->
 <div class="copyright">
-	 2014 &copy; Metronic - Admin Dashboard Template.
+	 2015 &copy; Nur Hidayatullah - Universitas Bhayangkara Surabaya
 </div>
 <!-- END COPYRIGHT -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
