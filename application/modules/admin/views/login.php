@@ -34,9 +34,7 @@
 <body class="login">
 <!-- BEGIN LOGO -->
 <div class="logo">
-	<a href="index.html">
-	<img src="<?php echo $this->config->item('theme_url');?>admin/layout/img/logo-big.png" alt=""/>
-	</a>
+	<h2 style="color:red"><strong>APLIKASI MANGGA</strong></h2>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->

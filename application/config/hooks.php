@@ -9,7 +9,13 @@
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
-
+$hook['pre_system'] = array(
+	'class'    => 'MY_Autoloader',
+	'function' => 'register',
+	'filename' => 'MY_Autoloader.php',
+	'filepath' => 'hooks',
+	'params'   => array(APPPATH.'base/')
+);
 
 
 /* End of file hooks.php */

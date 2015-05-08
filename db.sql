@@ -25,11 +25,11 @@ CREATE TABLE `group_user` (
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   PRIMARY KEY (`kode_group`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `group_user` */
 
-insert  into `group_user`(`kode_group`,`nama_group`,`create_at`,`update_at`) values (1,'Administrator','2015-04-25 19:05:00','2015-05-03 17:11:03'),(2,'Developer','2015-04-25 19:05:00','2015-04-26 05:30:10'),(8,'User','2015-04-25 17:53:23','2015-04-25 17:14:38'),(9,'Guest','2015-04-25 17:49:38',NULL);
+insert  into `group_user`(`kode_group`,`nama_group`,`create_at`,`update_at`) values (1,'Administrator','2015-04-25 19:05:00','2015-05-03 17:11:03'),(2,'Developer','2015-04-25 19:05:00','2015-04-26 05:30:10'),(8,'User','2015-04-25 17:53:23','2015-04-25 17:14:38');
 
 /*Table structure for table `menu` */
 
@@ -40,12 +40,14 @@ CREATE TABLE `menu` (
   `nama_menu` varchar(50) DEFAULT NULL,
   `controller` varchar(100) DEFAULT NULL,
   `kode_parent` int(11) DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
   PRIMARY KEY (`kode_menu`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 /*Data for the table `menu` */
 
-insert  into `menu`(`kode_menu`,`nama_menu`,`controller`,`kode_parent`) values (1,'menu user',NULL,0),(2,'user','admin/user',1),(3,'group','admin/group',1),(4,'role','admin/role',1),(8,'menu','admin/menu',1);
+insert  into `menu`(`kode_menu`,`nama_menu`,`controller`,`kode_parent`,`create_at`,`update_at`) values (17,'Menu Admin','',0,'2015-05-06 02:37:41','2015-05-08 02:37:59'),(18,'Master Menu','admin/menu/index',17,'2015-05-06 02:05:42',NULL),(19,'Master Hak Akses','admin/role/index',17,'2015-05-06 02:41:42',NULL),(20,'Master Group','admin/group/index',17,'2015-05-06 02:27:43',NULL),(21,'Master User','admin/user/index',17,'2015-05-06 02:47:43',NULL),(22,'Data Mangga','mangga/mangga/index',0,'2015-05-06 02:39:45',NULL),(23,'Data Latih','mangga/data_latih/index',22,'2015-05-06 02:16:46','2015-05-08 02:56:59');
 
 /*Table structure for table `role` */
 
@@ -55,10 +57,10 @@ CREATE TABLE `role` (
   `kode_role` int(11) NOT NULL AUTO_INCREMENT,
   `kode_group` int(11) DEFAULT NULL,
   `kode_menu` int(11) DEFAULT NULL,
-  `view` int(1) DEFAULT NULL,
-  `add` int(1) DEFAULT NULL,
-  `edit` int(1) DEFAULT NULL,
-  `delete` int(1) DEFAULT NULL,
+  `view` int(1) DEFAULT '0',
+  `itambah` int(1) DEFAULT '0',
+  `iupdate` int(1) DEFAULT '0',
+  `idelete` int(1) DEFAULT '0',
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   PRIMARY KEY (`kode_role`),
@@ -66,11 +68,11 @@ CREATE TABLE `role` (
   KEY `FK_role_menu` (`kode_menu`),
   CONSTRAINT `FK_role_group` FOREIGN KEY (`kode_group`) REFERENCES `group_user` (`kode_group`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_role_menu` FOREIGN KEY (`kode_menu`) REFERENCES `menu` (`kode_menu`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
 /*Data for the table `role` */
 
-insert  into `role`(`kode_role`,`kode_group`,`kode_menu`,`view`,`add`,`edit`,`delete`,`create_at`,`update_at`) values (1,1,2,0,0,0,0,'2015-05-03 20:21:00','2015-05-03 16:00:49'),(2,1,3,1,1,1,1,'2015-05-03 20:21:00','2015-05-03 16:27:47'),(3,2,2,1,1,1,1,'2015-05-03 20:21:00','2015-05-03 16:51:48'),(4,2,3,1,1,1,1,'2015-05-03 20:21:00','2015-05-03 16:29:47');
+insert  into `role`(`kode_role`,`kode_group`,`kode_menu`,`view`,`itambah`,`iupdate`,`idelete`,`create_at`,`update_at`) values (1,1,17,1,1,1,1,'2015-05-06 02:37:41','2015-05-07 17:03:45'),(2,2,17,1,1,1,1,'2015-05-06 02:37:41','2015-05-07 17:56:44'),(3,8,17,0,0,0,0,'2015-05-06 02:37:41','2015-05-07 17:39:44'),(5,1,18,1,1,1,1,'2015-05-06 02:06:42','2015-05-08 15:32:49'),(6,2,18,1,1,1,1,'2015-05-06 02:06:42','2015-05-07 17:16:45'),(7,8,18,0,0,0,0,'2015-05-06 02:06:42','2015-05-07 17:08:45'),(9,1,19,1,1,1,1,'2015-05-06 02:41:42','2015-05-07 06:05:55'),(10,2,19,1,0,0,0,'2015-05-06 02:41:42','2015-05-08 15:07:55'),(11,8,19,0,0,0,0,'2015-05-06 02:41:42',NULL),(13,1,20,1,1,1,1,'2015-05-06 02:27:43','2015-05-07 17:39:45'),(14,2,20,1,1,1,1,'2015-05-06 02:27:43','2015-05-07 17:37:45'),(15,8,20,0,0,0,0,'2015-05-06 02:27:43',NULL),(17,1,21,1,1,1,1,'2015-05-06 02:47:43','2015-05-07 17:21:38'),(18,2,21,1,1,1,1,'2015-05-06 02:47:43','2015-05-07 17:51:58'),(19,8,21,0,0,0,0,'2015-05-06 02:47:43',NULL),(21,1,22,1,1,1,1,'2015-05-06 02:39:45','2015-05-07 17:04:46'),(22,2,22,1,1,1,1,'2015-05-06 02:39:45','2015-05-07 17:03:46'),(23,8,22,1,0,0,0,'2015-05-06 02:40:45','2015-05-08 03:10:03'),(25,1,23,1,1,1,1,'2015-05-06 02:17:46','2015-05-07 17:15:46'),(26,2,23,1,1,1,1,'2015-05-06 02:17:46','2015-05-07 17:14:46'),(27,8,23,1,1,1,1,'2015-05-06 02:17:46','2015-05-08 03:23:03');
 
 /*Table structure for table `user` */
 
@@ -89,11 +91,11 @@ CREATE TABLE `user` (
   PRIMARY KEY (`kode_user`),
   KEY `FK_user` (`kode_group`),
   CONSTRAINT `FK_user` FOREIGN KEY (`kode_group`) REFERENCES `group_user` (`kode_group`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user` */
 
-insert  into `user`(`kode_user`,`first_name`,`last_name`,`email`,`password`,`active`,`kode_group`,`create_at`,`update_at`) values (3,'Nur','Hidayatullah','kematjaya0@gmail.com','25bj8EjnmZyJU7aPva_1j3MelqlmlZ0g1hXbpVJNOw8',0,2,'2015-04-26 04:21:35','2015-05-04 03:37:08'),(6,'superuser','user','nur_hidayat_45@yahoo.com','25bj8EjnmZyJU7aPva_1j3MelqlmlZ0g1hXbpVJNOw8',1,1,'2015-04-26 05:17:29','2015-05-03 17:46:29');
+insert  into `user`(`kode_user`,`first_name`,`last_name`,`email`,`password`,`active`,`kode_group`,`create_at`,`update_at`) values (3,'Nur','Hidayatullah','kematjaya0@gmail.com','Az3HG264cGTGj1MlxzOHzPuYQzwjquekgIcpqJ07q4c',1,2,'2015-04-26 04:21:35','2015-05-04 03:37:08'),(6,'superuser','user','nur_hidayat_45@yahoo.com','Az3HG264cGTGj1MlxzOHzPuYQzwjquekgIcpqJ07q4c',1,1,'2015-04-26 05:17:29','2015-05-03 17:46:29'),(7,'ady','Setyawan','ady@gmail.com','Az3HG264cGTGj1MlxzOHzPuYQzwjquekgIcpqJ07q4c',1,8,'2015-05-07 06:19:48','2015-05-07 18:57:03');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

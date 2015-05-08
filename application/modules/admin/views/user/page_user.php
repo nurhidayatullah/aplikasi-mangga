@@ -37,10 +37,12 @@
 									<div class="table-toolbar">
 										<div class="row">
 											<div class="col-md-6">
+											<?php if($tambah){?>
 												<div class="btn-group">
 													<a href="<?php echo base_url('admin/user/new_data/'.$menu);?>" class="btn green">Add New <i class="fa fa-plus"></i></a>
 												</div>
-												<?php if(!empty($msg)){ 
+											<?php }
+											 if(!empty($msg)){ 
 												if($msg==0){
 													?>
 												<div class="alert alert-warning alert-dismissable">

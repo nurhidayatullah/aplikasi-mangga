@@ -12,7 +12,12 @@ class group_model extends CI_Model {
     }
 	function save($data) {
         $this->db->insert('group_user', $data);
-        return (($this->db->affected_rows()>0)?TRUE:FALSE);
+		if($this->db->affected_rows()>0){
+			$query = $this->db->query('SELECT kode_group FROM group_user order by kode_group desc LIMIT 1');
+			$row = $query->row();
+			return $row->kode_group;
+		}
+        return NULL;
     }
 	function delete($id){
 		$this->db->where('kode_group',$id);

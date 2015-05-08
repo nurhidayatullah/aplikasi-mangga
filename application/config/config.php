@@ -14,6 +14,13 @@
 | path to your installation.
 |
 */
+function __autoload($class)
+{
+	if(strpos($class, 'CI_') !== 0)
+	{
+		@include_once( APPPATH . 'core/'. $class . EXT );
+	}
+}
 $config['base_url']	= 'http://nur_hidayat-pc/aplikasi-mangga/';
 $config['theme_url']    ='http://nur_hidayat-pc/aplikasi-mangga/assets/';
 /*
@@ -91,7 +98,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*

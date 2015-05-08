@@ -1,4 +1,8 @@
-
+<?php foreach($priv as $akses){
+	$tambah = $akses['itambah'];
+	$ubah = $akses['iupdate'];
+	$hapus = $akses['idelete'];
+}?>
 			<div class="page-content-wrapper">
 				<div class="page-content">
 					<!-- BEGIN PAGE HEADER-->
@@ -34,7 +38,7 @@
 										<div class="row">
 										</div>
 									</div>
-									<table class="table table-striped table-bordered table-hover">
+									<table class="table table-striped table-bordered table-hover" id="tb">
 										<thead>
 											<tr>
 												<th>No.</th>
@@ -64,16 +68,27 @@
 													$read="readonly";
 												}
 												?>
-												<td><input type="checkbox" name="delete"<?php echo $status;?> id="view-<?php echo $i;?>" class="form-control" onclick="view(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')" value="1"/>Enable</td>
 												<td>
-												<?php $add=$data['itambah'] ==1 ? 'checked' : '';?>
-												<input type="checkbox" name="add" class="form-control" id="add-<?php echo $i;?>" <?php echo $read;echo $add;?> onclick="add(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable</td>
+													<input type="checkbox" name="delete"<?php echo $status;?> id="view-<?php echo $i;?>" class="form-control" onclick="view(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')" value="1"/>Enable
+												</td>
 												<td>
-												<?php $edit=$data['iupdate'] ==1 ? 'checked' : '';?>
-												<input type="checkbox" name="edit" class="form-control" id="edit-<?php echo $i;?>"<?php echo $read;echo $edit;?> onclick="edit(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable</td>
+												<?php if($tambah){
+													$add=$data['itambah'] ==1 ? 'checked' : '';?>
+													<input type="checkbox" name="add" class="form-control" id="add-<?php echo $i;?>" <?php echo $read;echo $add;?> onclick="add(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable
+												<?php } ?>
+												</td>
 												<td>
-												<?php $delete=$data['idelete'] ==1 ? 'checked' : '';?>
-												<input type="checkbox" name="delete" class="form-control" id="delete-<?php echo $i;?>"<?php echo $read;echo $delete;?> onclick="del(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable</td>
+												<?php if($ubah){
+													$edit=$data['iupdate'] ==1 ? 'checked' : '';?>
+													<input type="checkbox" name="edit" class="form-control" id="edit-<?php echo $i;?>"<?php echo $read;echo $edit;?> onclick="edit(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable
+												<?php }?>
+												</td>
+												<td>
+												<?php if($hapus){
+													$delete=$data['idelete'] ==1 ? 'checked' : '';?>
+													<input type="checkbox" name="delete" class="form-control" id="delete-<?php echo $i;?>"<?php echo $read;echo $delete;?> onclick="del(<?php echo $i;?>,'<?php echo $this->my_encrypt->encode($data['kode_role']);?>')"/>Enable
+												<?php }?>
+												</td>
 											</tr>
 											<?php $i++;
 											}

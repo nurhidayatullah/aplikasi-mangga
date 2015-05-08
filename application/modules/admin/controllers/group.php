@@ -1,23 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Group extends CI_Controller {
+class Group extends Admin_Controller {
 
 	function __construct(){
         parent::__construct();
-		$this->load->helper('url');
-		$this->load->library('my_encrypt');
 		$this->load->model('admin/group_model');
-		$this->load->helper('security');
-		$this->load->library('session');
-		$this->load->model('login');
-		$this->loged = $this->login->ceck_login();
-		if(!$this->loged){
-			redirect(base_url('admin/login'));
-		}
-		$this->load->view('admin/header');
-		$this->load->view('admin/navbar');
-		$this->load->model('admin/menu_model');
-		$this->load->view('admin/sidebar_menu');
 	}
 	public function index($menu='',$msg=''){
 		$data['menu']=$menu;
@@ -33,21 +20,36 @@ class Group extends CI_Controller {
 	public function save(){
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('nama', 'Nama', 'required|trim|xss_clean');
-		$menu = $this->input->post('menu');
+		$url = $this->input->post('menu');
 		if ($this->form_validation->run() == FALSE) { 
 			$pesan['pesan'] = "error input : ".validation_errors();
 			$pesan['jenis'] = 0;
-			redirect(base_url('admin/group/index/'.$menu.'/'.$pesan));
+			redirect(base_url('admin/group/index/'.$url.'/'.$pesan));
 		}else{
 			$data['nama_group'] = $this->input->post('nama');
 			$data['create_at'] = date("Y-m-d H:s:i");
-			$result = $this->group_model->save($data); 
-			if($result){
+			$group = $this->group_model->save($data); 
+			$this->load->model('role_model');
+			$menu = $this->menu_model->All();
+			$r = "";
+			foreach($menu as $x){
+				$dt['kode_menu'] = $x['kode_menu'];
+				$dt['kode_group'] = $group;
+				$dt['create_at'] = date("Y-m-d H:s:i");
+				$res = $this->role_model->save($dt);
+				if($res){
+					$r .= 1;
+				}else{
+					$r .= 0;
+				}
+			}
+			$ck = strpos($r,"0");
+			if($ck===FALSE){
 				$pesan = 1;
-				redirect(base_url('admin/group/index/'.$menu.'/'.$pesan));
+				redirect(base_url('admin/group/index/'.$url.'/'.$pesan));
 			}else{
 				$pesan = 0;
-				redirect(base_url('admin/group/index/'.$menu.'/'.$pesan));
+				redirect(base_url('admin/group/index/'.$url.'/'.$pesan));
 			}
 		}
 	}
