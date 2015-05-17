@@ -16,5 +16,6 @@ class Data_latih extends Admin_Controller {
 		$data['menu'] = $menu;
 		$this->load->view('mangga/data-latih/new',$data);
 	}
+	
 }
 ?>

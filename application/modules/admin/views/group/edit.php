@@ -80,4 +80,6 @@ foreach($group as $data){
 				</div>
 			</div>
 		</div>
-<?php $this->load->view('admin/footer');
+<?php $this->load->view('admin/footer');?>
+</body>
+</html>

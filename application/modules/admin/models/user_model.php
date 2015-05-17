@@ -27,13 +27,25 @@ class user_model extends CI_Model {
 		return (($this->db->affected_rows()>0)?TRUE:FALSE);
 	}
 	function find($id){
-		$this->db->select('*');
+	//	$this->db->select('*');
 		$this->db->where('kode_user',$id);
 		$query = $this->db->get('user');
 		if($query->row_array()>0){
 			return $query->result_array();
 		}
 		return NULL;
+	}
+	function update_profile($data){
+		$value = array(
+			'first_name'=>$data['first_name'],
+			'last_name'=>$data['last_name'],
+			'email'=>$data['email'],
+			'password'=>$data['password'],
+			'update_at'=>$data['update_at']
+		);
+		$this->db->where('kode_user',$data['kode_user']);
+		$this->db->update('user',$value);
+		return (($this->db->affected_rows()>0)?TRUE:FALSE);
 	}
 	function update($data){
 		$value = array(

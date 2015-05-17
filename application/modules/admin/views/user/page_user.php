@@ -135,4 +135,6 @@
 			});
 		};
 		</script>
-<?php $this->load->view('admin/footer');
+<?php $this->load->view('admin/footer');?>
+</body>
+</html>

@@ -2,9 +2,6 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a href="index.html">
-			<img src="<?php echo $this->config->item('theme_url');?>admin/layout/img/logo.png" alt="logo" class="logo-default"/>
-			</a>
 			<div class="menu-toggler sidebar-toggler hide">
 			</div>
 		</div>
@@ -19,7 +16,7 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-default">
 						<li>
-							<a href="extra_profile.html">
+							<a href="<?php echo base_url('admin/user/change_profile/');?>">
 							<i class="icon-user"></i> My Profile </a>
 						</li>
 						<li>
