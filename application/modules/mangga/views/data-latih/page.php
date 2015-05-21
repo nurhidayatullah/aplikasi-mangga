@@ -57,15 +57,6 @@
 												<?php }} ?>
 											</div>
 											<div class="col-md-6">
-												<div class="btn-group pull-right">
-													<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="fa fa-angle-down"></i>
-													</button>
-													<ul class="dropdown-menu pull-right">
-														<li><a href="#">Print </a></li>
-														<li><a href="#">Save as PDF </a></li>
-														<li><a href="#">Export to Excel </a></li>
-													</ul>
-												</div>
 											</div>
 										</div>
 									</div>
@@ -93,11 +84,11 @@
 												<td>dcsscdscsd</td>
 												<td>
 												<?php if($edit){?>
-													<a href="<?php echo base_url('admin/user/edit/'.$menu.'/');?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
+													<a href="<?php echo base_url('admin/user/edit/'.$menu.'/');?>" class="btn btn-xs purple">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
 												<?php } 
 												if($hapus){
 												?>	
-													<a href="<?php echo base_url('admin/user/hapus/'.$menu.'/');?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+													<a href="<?php echo base_url('admin/user/hapus/'.$menu.'/');?>" class="btn btn-xs red">Hapus <i class="fa fa-trash"></i></a></td>
 												<?php } ?>
 											</tr>
 											<?php/* $i++;

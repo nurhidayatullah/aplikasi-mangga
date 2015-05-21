@@ -1,23 +1,39 @@
 <?php
 class Image_proc{
-	
-	public function grayscale($path,$fl){ //$path = path file,$fl = file name
-		$file = $path.$fl;
-		$img = imagecreatefromjpeg($file);
-		$im_data = getimagesize($file);
-        $dest = imagecreatetruecolor($im_data[0],$im_data[1]);
-        for($x=0;$x<$im_data[0];$x++){
-			for($y=0;$y<$im_data[1];$y++){
-				$gray = $this->get_luminance(imagecolorat($img,$x,$y));
+	var $tresh = 50;
+	var $citra;
+	var $citra_asli;
+	var $file;
+	var $ukuran;
+	var $keliling;
+	var $area;
+	public function grayscale(){
+        $dest = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+        for($x=0;$x<$this->ukuran[0];$x++){
+			for($y=0;$y<$this->ukuran[1];$y++){
+				$gray = $this->get_luminance(imagecolorat($this->citra,$x,$y));
 				$new_gray  = imagecolorallocate($dest,$gray,$gray,$gray);
 				imagesetpixel($dest,$x,$y,$new_gray); 
 			}
 		}
-		return $dest;
+		
+		$this->citra = $dest;
 	}
-	function norm($path,$fl){
-		$file = $path.$fl;
-		$histogram = $this->histogram($path,$fl);
+	
+	function read_file($file){
+		$this->citra = imagecreatefromjpeg($file);
+		$this->citra_asli = $this->citra;
+		$this->file = $file;
+		$this->ukuran = getimagesize($file);
+	}
+	
+	public function save($file,$path){ 
+		imagejpeg($file,$path, 100);
+		imagedestroy($file);
+	}
+	
+	function norm(){
+		$histogram = $this->histogram();
 		$min = array();
 		$max = array();
 		for($x=0;$x<count($histogram);$x++){
@@ -34,12 +50,10 @@ class Image_proc{
 				}
 			}
 		}
-		$img = imagecreatefromjpeg($file);
-		$im_data = getimagesize($file);
-        $dest = imagecreatetruecolor($im_data[0],$im_data[1]);
-        for($x=0;$x<$im_data[0];$x++){
-			for($y=0;$y<$im_data[1];$y++){
-				$rgb = imagecolorat($img,$x,$y);
+        $dest = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+        for($x=0;$x<$this->ukuran[0];$x++){
+			for($y=0;$y<$this->ukuran[1];$y++){
+				$rgb = imagecolorat($this->citra,$x,$y);
 				$r = ($rgb >> 16) & 0xFF;
 				$red=($r-$min[0])/($max[0]-$min[0]);
 				$R=(int)($red*255);
@@ -56,18 +70,14 @@ class Image_proc{
 				imagesetpixel($dest,$x,$y,$new); 
 			}
 		}
-		$this->save($dest,$file);
+		$this->citra = $dest;
+	//	$this->save($this->citra,$this->file);
 	}
-	public function save($file,$path){ //$file = file will be save,$path = full path destination
-		imagejpeg($file,$path, 100);
-		imagedestroy($file);
-	}
-	public function histogram($path,$fl){ //$path = path file,$fl = file name
+	
+	public function histogram(){
 		error_reporting(0);
-		$file = $path.$fl;
-		$images 		= imagecreatefromjpeg($file); 
-		$image_width 	= imagesx($images);
-		$image_height 	= imagesy($images);
+		$image_width 	= imagesx($this->citra);
+		$image_height 	= imagesy($this->citra);
 		$value[0] 		= array();
 		$value[1] 		= array();
 		$value[2] 		= array();
@@ -76,7 +86,7 @@ class Image_proc{
 		
 		for($x=0;$x<$image_width;$x++){
 			for($y=0;$y<$image_height;$y++){
-				$rgb = imagecolorat($images, $x, $y); 
+				$rgb = imagecolorat($this->citra, $x, $y); 
 				$r = ($rgb >> 16) & 0xFF;
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
@@ -114,18 +124,16 @@ class Image_proc{
 		}
 		return $means;
 	}
-	public function get_varian($path,$fl,$means){//$path = path of file,$fl = file name,$means = array of means
-		$file = $path.$fl;
-		$images 		= imagecreatefromjpeg($file); 
-		$image_width 	= imagesx($images);
-		$image_height 	= imagesy($images);
+	public function get_varian($means){
+		$image_width 	= imagesx($this->citra);
+		$image_height 	= imagesy($this->citra);
 		$pixel = $image_width*$image_height;
 		$Var['R']=0; //varian Red
 		$Var['G']=0; //Varian Green
 		$Var['B']=0; //Varian Blue
 		for($x=0;$x<$image_width;$x++){
 			for($y=0;$y<$image_height;$y++){
-				$rgb = imagecolorat($images, $x, $y); 
+				$rgb = imagecolorat($this->citra, $x, $y); 
 				$r = ($rgb >> 16) & 0xFF;
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
@@ -158,23 +166,20 @@ class Image_proc{
 		imagejpeg($image, $destination, $quality);
 		return $destination;
 	}
-	var $keliling;
-	var $area;
-	function set_keliling($file){
-		$this->keliling = $this->sobel($file,150);
+	
+	function set_keliling(){
+		$this->keliling = $this->sobel();
 	}
-	function set_area($file){
-		$this->area = $this->get_area($file);
+	function set_area(){
+		$this->area = $this->get_area();
 	}
-	function get_circularity($path,$nama){
-		$file = $path.$nama;
+	function get_circularity(){
 		$keliling = $this->keliling;
 		$area = $this->area;
-		$im_data = getimagesize($file);
 		$P = 0;
 		$A = 0;
-		for($x=0;$x<$im_data[0];$x++){
-	        for($y=0;$y<$im_data[1];$y++){
+		for($x = 0;$x < $this->ukuran[0];$x++){
+	        for($y = 0;$y < $this->ukuran[1];$y++){
 	        	$rgb_area = imagecolorat($area,$x,$y);
 	        	$ra = ($rgb_area >> 16) & 0xFF;
 				$ga = ($rgb_area >> 8) & 0xFF;
@@ -195,92 +200,80 @@ class Image_proc{
 	    $circularity = (4*3.14*$A)/($P*$P);
 	    return $circularity;
 	}
-	function get_area($file){
-	$img = $file;
-    $source_image = $img;
-    $starting_img = imagecreatefromjpeg($source_image);
-    $im_data = getimagesize($source_image);
-    $area = imagecreatetruecolor($im_data[0],$im_data[1]);	
-    for($x=0;$x<$im_data[0];$x++){
-        for($y=0;$y<$im_data[1];$y++){
-        	$rgb = imagecolorat($starting_img,$x,$y);
-        	$r = ($rgb >> 16) & 0xFF;
-			$g = ($rgb >> 8) & 0xFF;
-			$b = $rgb & 0xFF;
-			$gray = ($r+$g+$b)/3;
-			if($gray>120){
-				$bw = 255;
-			}else{
-				$bw = 0;
-			}
-			$new_gray  = imagecolorallocate($area,$bw,$bw,$bw);
-			imagesetpixel($area,$x,$y,$new_gray);
-        }
-    }
-	$this->save($area,$file);
-    return $area;
-	}
 
-function get_compactness($nama){
-	$im_data = getimagesize($nama);
-	$keliling = $this->keliling;
-	$area = $this->area;
-	$P = 0;
-	$A = 0;
-	for($x=0;$x<$im_data[0];$x++){
-        for($y=0;$y<$im_data[1];$y++){
-        	$rgb_area = imagecolorat($area,$x,$y);
-        	$ra = ($rgb_area >> 16) & 0xFF;
-			$ga = ($rgb_area >> 8) & 0xFF;
-			$ba = $rgb_area & 0xFF;
-			if($ra == 255 && $ga == 255 && $ba ==255){
-				$A = $A + 1;
-			}
-			$rgb_k = imagecolorat($keliling,$x,$y);
-        	$r = ($rgb_k >> 16) & 0xFF;
-			$g = ($rgb_k >> 8) & 0xFF;
-			$b = $rgb_k & 0xFF;
-			if($r == 255 && $g == 255 && $b ==255){
-				$P = $P + 1;
-			}
-			
-        }
-    }
-    $compactness = ($P*$P)/$A;
-    return $compactness;
-}
-	public function biner($path,$fl,$tresh){
-		$file = $path.$fl;
-		$img = imagecreatefromjpeg($file);
-		$im_data = getimagesize($file);
-        $dest = imagecreatetruecolor($im_data[0],$im_data[1]);
-        for($x=0;$x<$im_data[0];$x++){
-			for($y=0;$y<$im_data[1];$y++){
-				$gray = $this->get_luminance(imagecolorat($img,$x,$y));
-				if($gray > $tresh){
-					$gr = 255;
-				}else{
-					$gr = 0;
+	function get_compactness(){
+		$keliling = $this->keliling;
+		$area = $this->area;
+		$P = 0;
+		$A = 0;
+		for($x = 0;$x < $this->ukuran[0];$x++){
+			for($y = 0;$y < $this->ukuran[1];$y++){
+				$rgb_area = $this->get_rgb(imagecolorat($area,$x,$y));
+				if($rgb_area['r'] == 255 && $rgb_area['g'] == 255 && $rgb_area['b'] ==255){
+					$A = $A + 1;
 				}
-				$new_gray  = imagecolorallocate($dest,$gr,$gr,$gr);
-				imagesetpixel($dest,$x,$y,$new_gray); 
+				$rgb_k = $this->get_rgb(imagecolorat($keliling,$x,$y));
+				if($rgb_k['r'] == 255 && $rgb_k['g'] == 255 && $rgb_k['b'] ==255){
+					$P = $P + 1;
+				}
+				
 			}
 		}
-		return $dest;
+		$compactness = ($P*$P)/$A;
+		return $compactness;
 	}
+	
 	public function get_luminance($rgb){
         $r = ($rgb >> 16) & 0xFF;
 		$g = ($rgb >> 8) & 0xFF;
 		$b = $rgb & 0xFF;
 		return (($r+$g+$b)/3);
     }
-	public function sobel($file,$tresh){
+	
+	function get_rgb($rgb){
+		$data['r'] = ($rgb >> 16) & 0xFF;
+		$data['g'] = ($rgb >> 8) & 0xFF;
+		$data['b'] = $rgb & 0xFF;
+		return $data;
+	}
+	
+	var $luas;
+	function get_area(){
+		$area = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+		$front = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);		
+		for($x = 0;$x < $this->ukuran[0];$x++){
+			for($y = 0;$y < $this->ukuran[1];$y++){
+				$gray = $this->get_luminance(imagecolorat($this->citra,$x,$y));
+				$rgb = $this->get_rgb(imagecolorat($this->citra_asli,$x,$y));
+				if($gray > $this->tresh){
+					$bw = 255;
+					$r = $rgb['r'];
+					$g = $rgb['g'];
+					$b = $rgb['b'];
+				}else{
+					$bw = 0;
+					$r = 0;
+					$g = 0;
+					$b = 0;
+				}
+				$new_img  = imagecolorallocate($front,$r,$g,$b);
+				imagesetpixel($front,$x,$y,$new_img);
+				$new_gray  = imagecolorallocate($area,$bw,$bw,$bw);
+				imagesetpixel($area,$x,$y,$new_gray);
+			}
+		}
+		$this->citra = $front;
+		$this->luas = $area;
+		$this->save($this->citra,$this->file);
+		return $area;
+	}
+	
+	public function sobel(){
 		error_reporting(0);
-		$img = imagecreatefromjpeg($file);
-        $im_data = getimagesize($file);
-        $final = imagecreatetruecolor($im_data[0],$im_data[1]);
-        for($x=0;$x<$im_data[0];$x++){
-			for($y=0;$y<$im_data[1];$y++){
+		$img = $this->luas;
+        $final = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+        for($x = 0;$x < $this->ukuran[0];$x++){
+			for($y = 0;$y < $this->ukuran[1];$y++){
 				$pixel_up = $this->get_luminance(imagecolorat($img,$x,$y-1));
 				$pixel_down = $this->get_luminance(imagecolorat($img,$x,$y+1)); 
 				$pixel_left = $this->get_luminance(imagecolorat($img,$x-1,$y));
@@ -294,7 +287,7 @@ function get_compactness($nama){
 				$conv_y = ($pixel_up_left+($pixel_up*2)+$pixel_up_right)-($pixel_down_left+($pixel_down*2)+$pixel_down_right);
 				$gray = sqrt(($conv_x*$conv_x)+($conv_y*$conv_y));
 				
-				if($gray > $tresh){
+				if($gray > $this->tresh){
 					$gr = 255;
 				}else {
 					$gr = 0;
@@ -304,15 +297,14 @@ function get_compactness($nama){
 			}
         }
 		return $final;
+	//	$this->save($this->citra,$this->file);
 	}
-	public function prewitt($path,$fl,$tresh){
+	public function prewitt(){
 		error_reporting(0);
-		$file = $path.$fl;
-		$img = imagecreatefromjpeg($file);
-        $im_data = getimagesize($file);
-        $final = imagecreatetruecolor($im_data[0],$im_data[1]);
-        for($x=0;$x<$im_data[0];$x++){
-			for($y=0;$y<$im_data[1];$y++){
+		$img = $this->citra;
+        $final = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+        for($x = 0;$x < $this->ukuran[0];$x++){
+			for($y = 0;$y < $this->ukuran[1];$y++){
 				$pixel_up = $this->get_luminance(imagecolorat($img,$x,$y-1));
 				$pixel_down = $this->get_luminance(imagecolorat($img,$x,$y+1)); 
 				$pixel_left = $this->get_luminance(imagecolorat($img,$x-1,$y));
@@ -326,7 +318,7 @@ function get_compactness($nama){
 				$conv_y = ($pixel_up_left+$pixel_up+$pixel_up_right)-($pixel_down_left+$pixel_down+$pixel_down_right);
 				$gray = sqrt(($conv_x*$conv_x)+($conv_y*$conv_y));
 				
-				if($gray > $tresh){
+				if($gray > $this->tresh){
 					$gr = 255;
 				}else {
 					$gr = 0;
@@ -335,7 +327,7 @@ function get_compactness($nama){
 				imagesetpixel($final,$x,$y,$new_gray);            
 			}
         }
-		return $final;
+		$this->citra = $final;
 	}
 }
 ?>

@@ -93,7 +93,7 @@
 												<td><?php echo $data['first_name'];?></td>
 												<td><?php echo $data['last_name'];?></td>
 												<td><?php echo $data['email'];?></td>
-												<td><?php echo $data['password'];?></td>
+												<td><?php echo substr($data['password'],1,10);?></td>
 												<td><?php echo $data['nama_group'];?></td>
 												<td class="center"><?php echo $data['create_at'];?></td>
 												<td>
@@ -101,11 +101,11 @@
 												<input type="checkbox" id="ch-<?php echo $i;?>" <?php echo $status;?> onclick="actived('<?php echo $i;?>','<?php echo $this->my_encrypt->encode($data['kode_user']);?>')">Active</td>
 												<td>
 												<?php if($edit){?>
-													<a href="<?php echo base_url('admin/user/edit/'.$menu.'/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
+													<a href="<?php echo base_url('admin/user/edit/'.$menu.'/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-sm purple">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
 												<?php } 
 												if($hapus){
 												?>	
-													<a href="<?php echo base_url('admin/user/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+													<a href="<?php echo base_url('admin/user/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_user']));?>" class="btn btn-sm red">Hapus <i class="fa fa-trash"></i></a></td>
 												<?php } ?>
 											</tr>
 											<?php $i++;

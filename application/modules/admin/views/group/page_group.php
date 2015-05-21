@@ -5,22 +5,8 @@
 }?>
 			<div class="page-content-wrapper">
 				<div class="page-content">
-					<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-									<h4 class="modal-title">Modal title</h4>
-								</div>
-								<div class="modal-body">
-									 Widget settings form goes here
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn blue">Save changes</button>
-									<button type="button" class="btn default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-						</div>
+					<div class="modal fade" id="portlet-config">
+						
 					</div>
 					<!-- BEGIN PAGE HEADER-->
 					<h3 class="page-title">
@@ -74,15 +60,6 @@
 												<?php }} ?>
 											</div>
 											<div class="col-md-6">
-												<div class="btn-group pull-right">
-													<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="fa fa-angle-down"></i>
-													</button>
-													<ul class="dropdown-menu pull-right">
-														<li><a href="#">Print </a></li>
-														<li><a href="#">Save as PDF </a></li>
-														<li><a href="#">Export to Excel </a></li>
-													</ul>
-												</div>
 											</div>
 										</div>
 									</div>
@@ -106,12 +83,14 @@
 												<td class="center"><?php echo $data['create_at'];?></td>
 												<td>
 												<?php if($edit){?>
-													<a href="<?php echo base_url('admin/group/edit/'.$menu.'/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-warning">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
+													<a href="<?php echo base_url('admin/group/edit/'.$menu.'/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-sm purple">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
 												<?php } 
 												if($hapus){
 												?>
-													<a href="<?php echo base_url('admin/group/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-danger">Hapus <i class="fa fa-trash"></i></a></td>
+													<a href="<?php echo base_url('admin/group/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_group']));?>" class="btn btn-sm red">Hapus <i class="fa fa-trash"></i></a>
 												<?php } ?>
+													<a href="javascript:;" onclick="detail('<?php echo $this->my_encrypt->encode($data['kode_group']);?>')" class="btn btn-sm blue">Detail <i class="fa fa-desktop"></i></a>
+												</td>
 											</tr>
 											<?php $i++;
 											}
@@ -128,6 +107,15 @@
 				</div>
 			</div>
 		</div>
+		<script>
+			function detail(group){
+				$("#portlet-config").html(
+					$.ajax({
+						url:'<?php echo base_url();?>admin/role/detail/'+group,async: false
+						}).responseText);
+				$("#portlet-config").modal('show');
+			}
+		</script>
 <?php $this->load->view('admin/footer');?>
 </body>
 </html>

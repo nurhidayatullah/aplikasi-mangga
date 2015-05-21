@@ -9,7 +9,7 @@ foreach($user as $data){
 		<div class="page-content">
 			<!-- BEGIN PAGE HEADER-->
 			<h3 class="page-title">
-			Dashboard <small>Group</small>
+			Dashboard <small>Change Profile</small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -19,7 +19,7 @@ foreach($user as $data){
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">Group</a>
+						<a href="#">Change Profile</a>
 					</li>
 				</ul>
 			</div>
@@ -29,7 +29,7 @@ foreach($user as $data){
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="portlet box green-haze tasks-widget">
 						<div class="portlet-title">
-							<div class="caption">New Data Group</div>
+							<div class="caption">Change User Profile</div>
 							<div class="tools">
 								<a href="javascript:;" class="fullscreen">
 								</a>

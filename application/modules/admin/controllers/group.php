@@ -60,6 +60,7 @@ class Group extends Admin_Controller {
 			$this->load->view('admin/group/edit',$data);
 		}
 	}
+
 	public function hapus($menu='',$id=''){
 		if($this->security->xss_clean($id)){
 			$result = $this->group_model->delete($this->my_encrypt->decode($id));

@@ -1,5 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 class File_upload extends CI_Controller{
+	
+	function __construct(){
+		parent::__construct();
+		$this->load->library('image_proc');
+	}
 	function upload(){
 		$config['upload_path'] = './assets/data-latih/';
 		$config['allowed_types'] = 'jpg|png|jpeg';
@@ -24,8 +29,12 @@ class File_upload extends CI_Controller{
 			$upload['status'] = 1;
 			$upload['jenis'] = $this->input->post('jenis');
 			$this->image_lib->resize();
-			$this->load->library('image_proc');
-			$this->image_proc->norm($upload['file_path'],$upload['file_name']);
+			$this->image_proc->read_file($upload['full_path']);
+			$this->image_proc->norm();
+			$this->image_proc->set_area();
+			$this->image_proc->set_keliling();
+			$upload['circularity'] = $this->image_proc->get_circularity();
+			$upload['compactness'] = $this->image_proc->get_compactness();
 			echo json_encode($upload);
 		}else{
 			$error = $this->upload->display_errors();
@@ -39,15 +48,11 @@ class File_upload extends CI_Controller{
 	function get_data(){
 		$data = $_POST['dt'];
 		$x = json_decode($data);
-		$this->load->library('image_proc');
-		$histogram = $this->image_proc->histogram($x->file_path,$x->file_name);
+		$this->image_proc->read_file($x->full_path);
+		$histogram = $this->image_proc->histogram();
 		$means = $this->image_proc->get_means($histogram);
-		$varian = $this->image_proc->get_varian($x->file_path,$x->file_name,$means);
+		$varian = $this->image_proc->get_varian($means);
 		$deviasi = $this->image_proc->get_deviasi($varian);
-		$this->image_proc->set_keliling($x->full_path);
-		$this->image_proc->set_area($x->full_path);
-		$circularity = $this->image_proc->get_circularity($x->file_path,$x->file_name);
-		$compactness = $this->image_proc->get_compactness($x->full_path);
 		$fitur = array(
 			'jenis_mangga' => $x->jenis,
 			'means_r' => $means['R'],
@@ -56,8 +61,8 @@ class File_upload extends CI_Controller{
 			'standev_r' => $deviasi['R'],
 			'standev_g' => $deviasi['G'],
 			'standev_b' => $deviasi['B'],
-			'circularity' => $circularity,
-			'compactness' =>$compactness,
+			'circularity' => $x->circularity,
+			'compactness' =>$x->compactness,
 			'file' => $x->file_name
 		);
 	//	$result = $this->beras_model->Add($fitur);
@@ -66,7 +71,7 @@ class File_upload extends CI_Controller{
 		}else{
 			$hasil = 0;
 		}
-		echo json_encode($hasil);
+		echo json_encode($fitur);
 	}
 }
 ?>

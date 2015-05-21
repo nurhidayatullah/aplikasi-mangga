@@ -1,16 +1,21 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Role extends Admin_Controller {
+class Role extends CI_Controller {
 	function __construct(){
         parent::__construct();
+		$this->load->helper('url');
+		$this->load->library('my_encrypt');
+		$this->load->helper('security');
 		$this->load->model('admin/group_model');
 		$this->load->model('admin/user_model');
 		$this->load->model('admin/role_model');
 	}
-	public function index($menu='',$msg=''){
-		$data['priv'] = $this->menu_model->get_priv($menu,$this->session->userdata('kode_group'));
-		$data['role'] = $this->role_model->All();
-		$this->load->view('role/page_role',$data);
+	function detail($group){
+		if($this->security->xss_clean($group)){
+			$group = $this->my_encrypt->decode($group);
+			$data['role'] = $this->group_model->find_role($group);
+			$this->load->view('admin/group/detail',$data);
+		}
 	}
 	function add($id,$value){
 		if($this->security->xss_clean($id)){
