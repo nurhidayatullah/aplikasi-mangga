@@ -13,7 +13,7 @@
 						<ul class="page-breadcrumb">
 							<li>
 								<i class="fa fa-home"></i>
-								<a href="index.html">Home</a>
+								<a href="<?php echo base_url('admin/admin');?>">Home</a>
 								<i class="fa fa-angle-right"></i>
 							</li>
 							<li>
@@ -64,36 +64,40 @@
 										<thead>
 											<tr>
 												<th>No.</th>
-												<th>First Name</th>
-												<th>Last Name</th>
-												<th>Email</th>
-												<th>Password</th>
+												<th>Jenis</th>
+												<th>Mean G</th>
+												<th>Momen nth G</th>
+												<th>Dev G</th>
+												<th>Circularity</th>
+												<th>Compactness</th>
 												<th>Action</th>
 											</tr>
 										</thead>
 										<tbody>
-										<?php/* if(isset($user)){
+										<?php if(isset($data_latih)){
 											$i=1;
-											foreach($user as $data){
-											*/	?>
+											foreach($data_latih as $data){
+												?>
 											<tr>
-												<td>1</td>
-												<td>tes</td>
-												<td>dsfdfdsfds</td>
-												<td>dfdsdssd</td>
-												<td>dcsscdscsd</td>
+												<td><?php echo $i;?></td>
+												<td><?php echo $data['nama_mangga'];?></td>
+												<td><?php echo $data['mean_g'];?></td>
+												<td><?php echo $data['momen_g'];?></td>
+												<td><?php echo $data['dev_g'];?></td>
+												<td><?php echo $data['circularity'];?></td>
+												<td><?php echo $data['compactness'];?></td>
 												<td>
 												<?php if($edit){?>
-													<a href="<?php echo base_url('admin/user/edit/'.$menu.'/');?>" class="btn btn-xs purple">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;
+											<!--		<a href="<?php echo base_url('admin/user/edit/'.$menu.'/');?>" class="btn btn-xs purple">Edit <i class="fa fa-pencil-square-o"></i></a>&nbsp;-->
 												<?php } 
 												if($hapus){
 												?>	
-													<a href="<?php echo base_url('admin/user/hapus/'.$menu.'/');?>" class="btn btn-xs red">Hapus <i class="fa fa-trash"></i></a></td>
+													<a href="<?php echo base_url('mangga/data_latih/hapus/'.$menu.'/'.$this->my_encrypt->encode($data['kode_data']));?>" class="btn btn-xs red">Hapus <i class="fa fa-trash"></i></a></td>
 												<?php } ?>
 											</tr>
-											<?php/* $i++;
+											<?php $i++;
 											}
-										}*/?>
+										}?>
 										</tbody>
 									</table>
 								</div>

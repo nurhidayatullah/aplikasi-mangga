@@ -68,6 +68,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
+			<a href="<?php echo base_url();?>" class="btn red pull-left"><i class="fa fa-home"></i> Home</a>
 			<button type="submit" class="btn blue pull-right">
 			Login <i class="m-icon-swapright m-icon-white"></i>
 			</button>

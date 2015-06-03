@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "admin/admin";
+$route['default_controller'] = "aplikasi_mangga";
 $route['404_override'] = 'my404';
 
 

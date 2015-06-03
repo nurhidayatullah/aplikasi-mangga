@@ -1,0 +1,18 @@
+body{
+	background-image:url('../../img/bg.jpg');
+}
+.navbar-home{
+	padding:5px;
+	padding-right:20px;
+	margin-bottom:20px;
+	border:1px solid transparent;
+	border-radius:4px;
+}
+.canvas{
+	background-color:rgba(255,255,255,0.3);height:480px;
+}
+@media (max-width: 500px){
+	.canvas{
+		background-color:rgba(255,255,255,0.3);height:360px;
+	}
+}

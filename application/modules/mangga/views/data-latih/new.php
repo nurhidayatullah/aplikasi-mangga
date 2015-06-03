@@ -29,7 +29,7 @@
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?=base_url('admin');?>">Home</a>
+						<a href="<?php echo base_url('admin/admin');?>">Home</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
@@ -54,7 +54,7 @@
 							<div class="row">
 								<div class="col-md-1">
 									<div class="btn-group">
-										<a href="<?php echo base_url('mangga/data_latih/index/'.$menu);?>" class="btn btn-danger">Cancel</a>
+										<a href="<?php echo base_url('mangga/data_latih/index/'.$menu);?>" class="btn btn-danger">Back</a>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -75,10 +75,10 @@
 										</div>
 										<div class="form-group">
 											<label>Jenis Mangga
-											<select class="form-control" name="jenis">
-												<option value="01">Gadung</option>
-												<option value="10">Manalagi</option>
-												<option value="11">Curut</option>
+											<select class="form-control" name="jenis" required>
+											<?php foreach($mangga as $data){?>
+												<option value="<?php echo $data['kode_mangga'];?>"><?php echo $data['nama_mangga'];?></option>
+											<?php } ?>
 											</select>
 										</div>
 										<button type="button" onClick='return upload_gambar()' class="btn btn-success">Upload</button>
@@ -143,6 +143,14 @@
 						type:"POST",data:{dt:data},dataType:"json",
 						url:"<?php echo base_url();?>file_upload/get_data/",
 						success:function(data2){
+							$('#load').html("Saving Data...<img src='<?php echo base_url()?>/assets/img/gloader.gif' />");
+							$.ajax({
+								type:"POST",data:{dta:data2},dataType:"json",
+								url:"<?php echo base_url();?>mangga/data_latih/save",
+								success:function(response){
+									
+								}
+							});
 							$('#load').html("<div class='alert alert-success'><button class='close' data-dismiss='alert'>x</button><strong>Upload Success...!!</strong></div>");
 						}
 					});

@@ -55,22 +55,13 @@ class File_upload extends CI_Controller{
 		$deviasi = $this->image_proc->get_deviasi($varian);
 		$fitur = array(
 			'jenis_mangga' => $x->jenis,
-			'means_r' => $means['R'],
-			'means_g' => $means['G'],
-			'means_b' => $means['B'],
-			'standev_r' => $deviasi['R'],
-			'standev_g' => $deviasi['G'],
-			'standev_b' => $deviasi['B'],
-			'circularity' => $x->circularity,
-			'compactness' =>$x->compactness,
+			'means_g' => round($means['G'],4),
+			'standev_g' => round($deviasi['G'],4),
+			'varian_g' => round($varian['G'],4),
+			'circularity' => round($x->circularity,4),
+			'compactness' => round($x->compactness,4),
 			'file' => $x->file_name
 		);
-	//	$result = $this->beras_model->Add($fitur);
-		if(1){
-			$hasil = 1;
-		}else{
-			$hasil = 0;
-		}
 		echo json_encode($fitur);
 	}
 }
