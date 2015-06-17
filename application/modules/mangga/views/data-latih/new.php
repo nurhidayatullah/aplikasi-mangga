@@ -143,7 +143,7 @@
 						type:"POST",data:{dt:data},dataType:"json",
 						url:"<?php echo base_url();?>file_upload/get_data/",
 						success:function(data2){
-							$('#load').html("Saving Data...<img src='<?php echo base_url()?>/assets/img/gloader.gif' />");
+						/*	$('#load').html("Saving Data...<img src='<?php echo base_url()?>/assets/img/gloader.gif' />");
 							$.ajax({
 								type:"POST",data:{dta:data2},dataType:"json",
 								url:"<?php echo base_url();?>mangga/data_latih/save",
@@ -152,7 +152,7 @@
 								}
 							});
 							$('#load').html("<div class='alert alert-success'><button class='close' data-dismiss='alert'>x</button><strong>Upload Success...!!</strong></div>");
-						}
+					*/	}
 					});
 				}
 			}

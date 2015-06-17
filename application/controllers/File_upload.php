@@ -53,7 +53,7 @@ class File_upload extends CI_Controller{
 		$means = $this->image_proc->get_means($histogram);
 		$varian = $this->image_proc->get_varian($means);
 		$deviasi = $this->image_proc->get_deviasi($varian);
-		$fitur = array(
+	/*	$fitur = array(
 			'jenis_mangga' => $x->jenis,
 			'means_g' => round($means['G'],4),
 			'standev_g' => round($deviasi['G'],4),
@@ -62,7 +62,7 @@ class File_upload extends CI_Controller{
 			'compactness' => round($x->compactness,4),
 			'file' => $x->file_name
 		);
-		echo json_encode($fitur);
+		echo json_encode($fitur);*/
 	}
 }
 ?>

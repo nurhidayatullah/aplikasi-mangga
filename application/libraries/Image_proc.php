@@ -1,23 +1,73 @@
 <?php
 class Image_proc{
-	var $tresh = 50;
+	var $tresh = 80;
 	var $citra;
 	var $citra_asli;
 	var $file;
 	var $ukuran;
 	var $keliling;
 	var $area;
-	public function grayscale(){
+	public function cetak_tabel_rgb(){
         $dest = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
-        for($x=0;$x<$this->ukuran[0];$x++){
-			for($y=0;$y<$this->ukuran[1];$y++){
-				$gray = $this->get_luminance(imagecolorat($this->citra,$x,$y));
-				$new_gray  = imagecolorallocate($dest,$gray,$gray,$gray);
-				imagesetpixel($dest,$x,$y,$new_gray); 
+		$out = "<table border='1px'>";
+        for($x=0;$x<$this->ukuran[1];$x++){
+			if($x < 10 || $x > ($this->ukuran[1]-3)){
+				$out .= "<tr>";
+				for($y=0;$y<$this->ukuran[0];$y++){
+					if($y < 10 || $y > ($this->ukuran[0]-3)){
+						$out .= "<td>";
+						$rgb = imagecolorat($this->citra,$y,$x);
+						$r = ($rgb >> 16) & 0xFF;
+						$g = ($rgb >> 8) & 0xFF;
+						$b = $rgb & 0xFF;
+						$out .="R : ".$r."</br>G : ".$g."</br>B : ".$b;
+						$out .= "</td>";
+					}
+				}
+				$out .= "</tr>";
 			}
 		}
-		
-		$this->citra = $dest;
+		$out .= "</table>";
+		echo $out;
+	}
+	
+	function cetak_tabel_gray(){	
+		$dest = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+		$out = "<table border='1px'>";
+		$a = 1;
+		$out .="<tr><td></td>";
+		for($b=0;$b<$this->ukuran[0];$b++){
+			if($b < 15 || $b > ($this->ukuran[0]-3)){
+				$out .="<td>".($b+1)."</td>";
+			}
+		}
+		$out .="</tr>";
+		for($x = 0;$x < $this->ukuran[1];$x++){
+			if($x < 15 || $x > ($this->ukuran[1]-3)){
+				$out .= "<tr>";
+				$out .="<td>".($a)."</td>";
+				for($y = 0;$y < $this->ukuran[0];$y++){
+					if($y < 15 || $y > ($this->ukuran[0]-3)){
+						$out .= "<td>";
+						$gray = round($this->get_luminance(imagecolorat($this->citra,$y,$x)));
+						if($gray < 50){
+							$gray = 0;
+						}else{
+							$gray = 1;
+						}
+						$out .= $gray;
+						$out .="</td>";
+					//	$new_gray  = imagecolorallocate($dest,$gray,$gray,$gray);
+					//	imagesetpixel($dest,$y,$x,$new_gray);
+					}
+				}
+				$out .= "</tr>";
+			}
+			$a++;
+		}
+		$out .= "</table>";
+	//	$this->save($dest,$this->file);
+		echo $out;
 	}
 	
 	function read_file($file){
@@ -117,11 +167,16 @@ class Image_proc{
 		$means['R'] = 0;
 		$means['G'] = 0;
 		$means['B'] = 0;
+		$out = "Mean Green = ";
 		for($x=0;$x<256;$x++){
+		//	echo "p(".$x.") = ".$histogram[1][$x]."/".$histogram[4]." = ".round($histogram[1][$x]/$histogram[4],4)."</br>";
 			$means['R'] = $means['R'] + ($x*($histogram[0][$x]/$histogram[4]));
 			$means['G'] = $means['G'] + ($x*($histogram[1][$x]/$histogram[4]));
 			$means['B'] = $means['B'] + ($x*($histogram[2][$x]/$histogram[4]));
+			$out .= "+(".$x."*".round($histogram[1][$x]/$histogram[4],4).")";
 		}
+		$out .=" = ".$means['G'];
+	//	echo $out;
 		return $means;
 	}
 	public function get_varian($means){
@@ -131,26 +186,31 @@ class Image_proc{
 		$Var['R']=0; //varian Red
 		$Var['G']=0; //Varian Green
 		$Var['B']=0; //Varian Blue
+		$out = "Moment nth Green = ";
 		for($x=0;$x<$image_width;$x++){
 			for($y=0;$y<$image_height;$y++){
 				$rgb = imagecolorat($this->citra, $x, $y); 
 				$r = ($rgb >> 16) & 0xFF;
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
-				$Var['R']=$Var['R']+((pow($r-$means['R'],2)));
-				$Var['G']=$Var['G']+((pow($r-$means['G'],2)));
-				$Var['B']=$Var['B']+((pow($r-$means['B'],2)));
+				$out .= " + ( ( ".$r." - ".round($means['G'],4)." ) ^ 2 )";
+				$Var['R']=$Var['R']+((pow($r-round($means['R'],4),2)));
+				$Var['G']=$Var['G']+((pow($r-round($means['G'],4),2)));
+				$Var['B']=$Var['B']+((pow($r-round($means['B'],4),2)));
 				}
 			}
+			$out .=" / ".$pixel." = ".($Var['G']/$pixel);
 		$Varian['R'] = ($Var['R']/$pixel);
 		$Varian['G'] = ($Var['G']/$pixel);
 		$Varian['B'] = ($Var['B']/$pixel);
+	//	echo $out;
 		return $Varian;
 	}
 	public function get_deviasi($varian){ //$varian = array varian
 		$Dev['R'] = sqrt($varian['R']);
 		$Dev['G'] = sqrt($varian['G']);
 		$Dev['B'] = sqrt($varian['B']);
+		echo "Standart Deviasi = sqrt(".$varian['G'].") = ".$Dev['G'];
 		return $Dev;
 	}
 	public function compress($source, $destination, $quality) { //$source = file source,$destination = file destonation,$quality = quality destination file
@@ -169,9 +229,11 @@ class Image_proc{
 	
 	function set_keliling(){
 		$this->keliling = $this->sobel();
+		return $this->keliling;
 	}
 	function set_area(){
 		$this->area = $this->get_area();
+		return $this->area;
 	}
 	function get_circularity(){
 		$keliling = $this->keliling;
@@ -197,6 +259,7 @@ class Image_proc{
 				
 	        }
 	    }
+		//echo "Area : ".$A.",Kel : ".$P;
 	    $circularity = (4*3.14*$A)/($P*$P);
 	    return $circularity;
 	}
@@ -243,9 +306,9 @@ class Image_proc{
 		$front = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);		
 		for($x = 0;$x < $this->ukuran[0];$x++){
 			for($y = 0;$y < $this->ukuran[1];$y++){
-				$gray = $this->get_luminance(imagecolorat($this->citra,$x,$y));
+				$gray = $this->get_rgb(imagecolorat($this->citra,$x,$y));
 				$rgb = $this->get_rgb(imagecolorat($this->citra_asli,$x,$y));
-				if($gray > $this->tresh){
+				if($gray['g'] > $this->tresh){
 					$bw = 255;
 					$r = $rgb['r'];
 					$g = $rgb['g'];
@@ -267,7 +330,51 @@ class Image_proc{
 		$this->save($this->citra,$this->file);
 		return $area;
 	}
-	
+	function cetak_sobel(){
+		$img = $this->luas;
+		$a = 1;
+        $final = imagecreatetruecolor($this->ukuran[0],$this->ukuran[1]);
+		$out = "<table border='1px'>";
+		$out .="<tr><td></td>";
+		for($b=0;$b<$this->ukuran[0];$b++){
+			$out .="<td>".($b+1)."</td>";
+		}
+		$out .="</tr>";
+		$hitung = "";
+		for($x = 0;$x < $this->ukuran[1];$x++){
+			$out .= "<tr>";
+			$out .="<td>".($a)."</td>";
+			for($y = 0;$y < $this->ukuran[0];$y++){
+				$pixel_up = $this->get_luminance(imagecolorat($img,$y,$x-1));
+				$pixel_down = $this->get_luminance(imagecolorat($img,$y,$x+1)); 
+				$pixel_left = $this->get_luminance(imagecolorat($img,$y-1,$x));
+				$pixel_right = $this->get_luminance(imagecolorat($img,$y+1,$x));
+				$pixel_up_left = $this->get_luminance(imagecolorat($img,$y-1,$x-1));
+				$pixel_up_right = $this->get_luminance(imagecolorat($img,$y+1,$x-1));
+				$pixel_down_left = $this->get_luminance(imagecolorat($img,$y-1,$x+1));
+				$pixel_down_right = $this->get_luminance(imagecolorat($img,$y+1,$x+1));
+		//		$hitung .= "Piksel[".$x."][".$y."] = sqrt(";
+				$conv_x = ($pixel_up_right+($pixel_right*2)+$pixel_down_right)-($pixel_up_left+($pixel_left*2)+$pixel_down_left);
+		//		$hitung .= "(((".$pixel_up_right." + (".$pixel_right." * 2) + ".$pixel_down_right." )-( ".$pixel_up_left." + ( ".$pixel_left." * 2 ) + ".$pixel_down_left." ))^2) + ";
+				$conv_y = ($pixel_up_left+($pixel_up*2)+$pixel_up_right)-($pixel_down_left+($pixel_down*2)+$pixel_down_right);
+		//		$hitung .= "(((".$pixel_up_left." + (".$pixel_up." * 2) + ".$pixel_up_right." )-( ".$pixel_down_left." + ( ".$pixel_down." * 2 ) + ".$pixel_down_right." ))^2)";
+				$gray = sqrt(($conv_x*$conv_x)+($conv_y*$conv_y));
+		//		$hitung .= " = ".$gray." < ".$this->tresh;
+				if($gray > $this->tresh){
+					$gr = 1;
+				}else {
+					$gr = 0;
+				}
+		//		$hitung .= " = ".$gr."</br>";
+				$out .="<td>".$gr."</td>";         
+			}
+			$out .="</tr>";
+			$a++;
+        }
+	//	echo $hitung;
+		$out .="</table>";
+		echo $out;
+	}
 	public function sobel(){
 		error_reporting(0);
 		$img = $this->luas;
@@ -282,7 +389,6 @@ class Image_proc{
 				$pixel_up_right = $this->get_luminance(imagecolorat($img,$x+1,$y-1));
 				$pixel_down_left = $this->get_luminance(imagecolorat($img,$x-1,$y+1));
 				$pixel_down_right = $this->get_luminance(imagecolorat($img,$x+1,$y+1));
-				
 				$conv_x = ($pixel_up_right+($pixel_right*2)+$pixel_down_right)-($pixel_up_left+($pixel_left*2)+$pixel_down_left);
 				$conv_y = ($pixel_up_left+($pixel_up*2)+$pixel_up_right)-($pixel_down_left+($pixel_down*2)+$pixel_down_right);
 				$gray = sqrt(($conv_x*$conv_x)+($conv_y*$conv_y));
@@ -297,7 +403,6 @@ class Image_proc{
 			}
         }
 		return $final;
-	//	$this->save($this->citra,$this->file);
 	}
 	public function prewitt(){
 		error_reporting(0);

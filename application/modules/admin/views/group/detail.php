@@ -20,6 +20,7 @@
 								<div class="row">
 								</div>
 							</div>
+							<div class="table-responsive">
 							<table class="table table-striped table-bordered table-hover" id="tb">
 								<thead>
 									<tr>
@@ -88,6 +89,7 @@
 								}?>
 								</tbody>
 							</table>
+							</div>
 						</div>
 					</div>
 				</div>
