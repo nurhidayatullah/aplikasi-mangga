@@ -15,7 +15,29 @@ class Admin extends CI_Controller {
 			$this->load->view('admin/navbar');
 			$this->load->model('admin/menu_model');
 			$this->load->view('admin/sidebar_menu');
-			$this->load->view('admin/index');
+			
+			$this->load->model('voted/pelatihan_model');
+			$c = $this->pelatihan_model->getBobotVoting();
+			$data['k'] = $c[0];
+			$data['c'] = $c[1];
+			
+			$this->load->model('mangga/data_latih_model');
+			$data['data'] = $this->data_latih_model->getCount();
+			
+			$this->load->model('mangga/mangga_model');
+			$data['class'] = $this->mangga_model->getCount();
+			
+			$this->load->model('log_model');
+			$last = $this->log_model->getLast();
+			if($last){
+				$data['tanggal'] 	= $last['tanggal'];
+				$data['epoch'] 		= $last['last'];
+			}else{
+				$data['tanggal'] 	= 'never';
+				$data['epoch'] 		= '0';
+			}
+			
+			$this->load->view('admin/index',$data);
 		}else{
 			redirect(base_url('admin/login'));
 		}

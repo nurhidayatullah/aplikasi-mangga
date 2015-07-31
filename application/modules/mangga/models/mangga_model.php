@@ -20,6 +20,12 @@ class mangga_model extends CI_Model {
 		}
 		return NULL;
 	}
+	
+	function getCount(){
+		$query = $this->db->get('mangga'); 
+		return $query->num_rows();
+	}
+	
 	function add($data) {
         $this->db->insert('mangga', $data);
 		return (($this->db->affected_rows()>0)?TRUE:FALSE);

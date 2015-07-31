@@ -3,7 +3,7 @@
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
 			<div class="page-logo">
-			<a href="index.html">
+			<a href="<?php echo base_url('admin/admin');?>">
 			<img src="<?php echo $this->config->item('theme_url');?>admin/layout/img/logo.png" alt="logo" class="logo-default"/>
 			</a>
 			<div class="menu-toggler sidebar-toggler hide">

@@ -17,9 +17,9 @@ class Mangga extends Admin_Controller {
 		$biner = array();
 		$mangga = $this->mangga_model->get_biner();
 		//print_r($mangga);
-		for($x=0;$x<16;$x++){
+		for($x=0;$x<8;$x++){
 			$str = "";
-			for($y=strlen(decbin($x));$y<4;$y++){
+			for($y=strlen(decbin($x));$y<3;$y++){
 				$str .= 0;
 			}
 			$nilai = $str.decbin($x);

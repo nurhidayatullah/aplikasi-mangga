@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.6.16 : Database - aplikasi-mangga
+MySQL - 5.5.36 : Database - aplikasi-mangga
 *********************************************************************
 */
 
@@ -32,11 +32,28 @@ CREATE TABLE `data_latih` (
   PRIMARY KEY (`kode_data`),
   KEY `nmn` (`kode_mangga`),
   CONSTRAINT `nmn` FOREIGN KEY (`kode_mangga`) REFERENCES `mangga` (`kode_mangga`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `data_latih` */
 
-insert  into `data_latih`(`kode_data`,`mean_g`,`momen_g`,`dev_g`,`circularity`,`compactness`,`kode_mangga`,`nama_file`) values (5,19.0089,1569.4216,39.6159,0.0675,185.9504,8,'DSC_0097.jpg'),(6,11.3314,856.1443,29.2599,0.0715,175.6719,8,'DSC_0098.jpg'),(7,11.8062,813.9857,28.5304,0.0538,233.3739,8,'DSC_0099.jpg'),(8,12.1495,907.6383,30.127,0.0686,183.1425,8,'DSC_0100.jpg'),(9,16.5175,1154.8557,33.9832,0.0669,187.8479,8,'DSC_0101.jpg'),(10,12.075,909.0813,30.151,0.0714,175.9473,8,'DSC_0102.jpg'),(11,14.4927,1105.1201,33.2433,0.0737,170.3599,8,'DSC_0103.jpg'),(12,13.7615,990.308,31.4692,0.0645,194.6927,8,'DSC_0104.jpg'),(13,12.8831,1048.3667,32.3785,0.0632,198.8306,8,'DSC_0105.jpg'),(14,11.9617,879.5323,29.6569,0.0694,181.1019,8,'DSC_0106.jpg');
+/*Table structure for table `data_uji` */
+
+DROP TABLE IF EXISTS `data_uji`;
+
+CREATE TABLE `data_uji` (
+  `kode_data` int(11) NOT NULL AUTO_INCREMENT,
+  `mean_g` double DEFAULT NULL,
+  `momen_g` double DEFAULT NULL,
+  `dev_g` double DEFAULT NULL,
+  `circularity` double DEFAULT NULL,
+  `compactness` double DEFAULT NULL,
+  `kode_mangga` int(11) DEFAULT NULL,
+  `nama_file` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`kode_data`),
+  CONSTRAINT `uji-mangga` FOREIGN KEY (`kode_data`) REFERENCES `mangga` (`kode_mangga`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `data_uji` */
 
 /*Table structure for table `group_user` */
 
@@ -63,12 +80,13 @@ CREATE TABLE `mangga` (
   `nama_mangga` varchar(50) DEFAULT NULL,
   `biner` varchar(4) DEFAULT NULL,
   `foto` varchar(50) DEFAULT NULL,
+  `keterangan` text,
   PRIMARY KEY (`kode_mangga`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `mangga` */
 
-insert  into `mangga`(`kode_mangga`,`nama_mangga`,`biner`,`foto`) values (8,'Gadung','0011','DSC_0094_(2).jpg');
+insert  into `mangga`(`kode_mangga`,`nama_mangga`,`biner`,`foto`,`keterangan`) values (8,'Gadung','001','DSC_0094_(2).jpg',NULL),(9,'Mangga Golek','010','DSC_0103.jpg',NULL),(10,'Mangga Manalagi','011','DSC_0094.jpg',NULL),(11,'Mangga Madu','100','Capture2.PNG',NULL),(12,'Mangga Curut','101','DSC_0097.jpg',NULL);
 
 /*Table structure for table `menu` */
 
@@ -97,30 +115,25 @@ CREATE TABLE `pelatihan` (
   `v11` double DEFAULT NULL,
   `v12` double DEFAULT NULL,
   `v13` double DEFAULT NULL,
-  `v14` double DEFAULT NULL,
   `v21` double DEFAULT NULL,
   `v22` double DEFAULT NULL,
   `v23` double DEFAULT NULL,
-  `v24` double DEFAULT NULL,
   `v31` double DEFAULT NULL,
   `v32` double DEFAULT NULL,
   `v33` double DEFAULT NULL,
-  `v34` double DEFAULT NULL,
   `v41` double DEFAULT NULL,
   `v42` double DEFAULT NULL,
   `v43` double DEFAULT NULL,
-  `v44` double DEFAULT NULL,
   `v51` double DEFAULT NULL,
   `v52` double DEFAULT NULL,
   `v53` double DEFAULT NULL,
-  `v54` double DEFAULT NULL,
   `c` int(11) DEFAULT NULL,
   PRIMARY KEY (`kode_vektor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pelatihan` */
 
-insert  into `pelatihan`(`kode_vektor`,`v11`,`v12`,`v13`,`v14`,`v21`,`v22`,`v23`,`v24`,`v31`,`v32`,`v33`,`v34`,`v41`,`v42`,`v43`,`v44`,`v51`,`v52`,`v53`,`v54`,`c`) values (1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),(2,0,0,0,0,0,0,0,0,0,0,3,9,0,6,1,1,8,5,0,9,19);
+insert  into `pelatihan`(`kode_vektor`,`v11`,`v12`,`v13`,`v21`,`v22`,`v23`,`v31`,`v32`,`v33`,`v41`,`v42`,`v43`,`v51`,`v52`,`v53`,`c`) values (1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),(2,0,0,0,0,0,0,0,0,0,0,3,9,0,5,9,3);
 
 /*Table structure for table `role` */
 

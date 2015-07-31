@@ -1,12 +1,28 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
-class File_upload extends CI_Controller{
+class Classification extends CI_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->library('image_proc');
+		$this->load->helper('url');
+	}
+	
+	function index(){
+		$data['content'] = "klasifikasi";
+		$menu = array(
+			array('name'=>'Home','url'=>base_url(),'class'=>''),
+			array('name'=>'Classification','url'=>base_url('classification'),'class'=>'active'),
+		);
+		$data['menu'] = $menu;
+		$this->load->view('index',$data);
+	}
+	
+	function get_vektor(){
+		$this->load->model('voted/pelatihan_model');
+		$v = $this->pelatihan_model->get_vektor();
+		echo json_encode($v);
 	}
 	function upload(){
-		$config['upload_path'] = './assets/data-latih/';
+		$config['upload_path'] = './assets/data-uji/';
 		$config['allowed_types'] = 'jpg|png|jpeg';
 		$this->load->library('upload', $config);
 		if($this->upload->do_upload()){
@@ -26,14 +42,13 @@ class File_upload extends CI_Controller{
 			}
 			$conf['maintain_ratio'] = TRUE;
 			$this->load->library('image_lib', $conf);
+			$this->load->library('image_proc');
 			$upload['status'] = 1;
 			$upload['jenis'] = $this->input->post('jenis');
 			$this->image_lib->resize();
 			$this->image_proc->read_file($upload['full_path']);
 			$this->image_proc->norm();
-		//	$this->image_proc->cetak_tabel_rgb();
 			$this->image_proc->set_area();
-		//	$this->image_proc->cetak_sobel();
 			$this->image_proc->set_keliling();
 			$upload['circularity'] = $this->image_proc->get_circularity();
 			$upload['compactness'] = $this->image_proc->get_compactness();
@@ -47,24 +62,12 @@ class File_upload extends CI_Controller{
 			echo json_encode($data);
 		}
 	}
-	function get_data(){
-		$data = $_POST['dt'];
-		$x = json_decode($data);
-		$this->image_proc->read_file($x->full_path);
-		$histogram = $this->image_proc->histogram();
-		$means = $this->image_proc->get_means($histogram);
-		$varian = $this->image_proc->get_varian($means);
-		$deviasi = $this->image_proc->get_deviasi($varian);
-		$fitur = array(
-			'jenis_mangga' => $x->jenis,
-			'means_g' => round($means['G'],4),
-			'standev_g' => round($deviasi['G'],4),
-			'varian_g' => round($varian['G'],4),
-			'circularity' => round($x->circularity,4),
-			'compactness' => round($x->compactness,4),
-			'file' => $x->file_name
-		);
-		echo json_encode($fitur);
+	function calculate(){
+		$data = $_POST['dta'];
+		$vektor = $_POST['vektor'];
+		$data = array($data['means_g'],$data['varian_g'],$data['standev_g'],$data['compactness'],$data['circularity']);
+		$this->load->library('voted_perceptron');
+		$out = $this->voted_perceptron->classifier($data,$vektor);
 	}
 }
 ?>

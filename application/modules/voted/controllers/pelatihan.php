@@ -21,12 +21,29 @@ class Pelatihan extends CI_Controller{
 		$this->load->view('admin/navbar');
 		$this->load->model('admin/menu_model');
 		$this->load->view('admin/sidebar_menu');
+		$this->load->model('log_model');
+		$last = $this->log_model->getLast();
+		if($last){
+			$data['tanggal'] 	= $last['tanggal'];
+			$data['epoch'] 		= $last['last'];
+		}else{
+			$data['tanggal'] 	= 'never';
+			$data['epoch'] 		= '0';
+		}
 		$this->load->view('voted/pelatihan',$data);
 	}
 	function get_data_latih(){
 		$this->load->model('mangga/data_latih_model');
 		$data = $this->data_latih_model->get_json_data_latih();
 		echo $data;
+	}
+	function kosongkan($menu='',$msg=''){
+		$this->load->model('voted/pelatihan_model');
+		$data = $this->pelatihan_model->kosongkan();
+		$this->load->model('log_model');
+		$log = $this->log_model->kosongkan();
+		
+		redirect(base_url('voted/pelatihan/index/'.$menu));
 	}
 	function get_vektor(){
 		$this->load->model('voted/pelatihan_model');
@@ -36,15 +53,20 @@ class Pelatihan extends CI_Controller{
 	
 	function save(){
 		$v = $_POST['v'];
+		$data['last_epoch'] = $_POST['epoch'];
+		$data['tanggal'] 	= date('Y-m-d H:i:s');
+		$this->load->model('log_model');
+		$this->log_model->save($data);
+		
 		$this->load->model('voted/pelatihan_model');
 		$i = 0;
 		foreach($v as $data){
 			$val = array(
-						'v11'=>$data[0],'v12'=>$data[1],'v13'=>$data[2],'v14'=>$data[3],
-						'v21'=>$data[4],'v22'=>$data[5],'v23'=>$data[6],'v24'=>$data[7],
-						'v31'=>$data[8],'v32'=>$data[9],'v33'=>$data[10],'v34'=>$data[11],
-						'v41'=>$data[12],'v42'=>$data[13],'v43'=>$data[14],'v44'=>$data[15],
-						'v51'=>$data[16],'v52'=>$data[17],'v53'=>$data[18],'v54'=>$data[19],'c'=>$data[20]
+						'v11'=>$data[0],'v12'=>$data[1],'v13'=>$data[2],
+						'v21'=>$data[3],'v22'=>$data[4],'v23'=>$data[5],
+						'v31'=>$data[6],'v32'=>$data[7],'v33'=>$data[8],
+						'v41'=>$data[9],'v42'=>$data[10],'v43'=>$data[11],
+						'v51'=>$data[12],'v52'=>$data[13],'v53'=>$data[14],'c'=>$data[15]
 					);
 			if($i>0){
 				$v = $this->pelatihan_model->save($val);

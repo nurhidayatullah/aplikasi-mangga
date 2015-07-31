@@ -14,6 +14,11 @@ class data_latih_model extends CI_Model {
 		}
 		return NULL;
 	}
+	
+	function getCount(){
+		$query = $this->db->get('data_latih'); 
+		return $query->num_rows();
+	}
 	function delete($id){
 		$this->db->where('kode_data',$id);
 		$this->db->delete('data_latih'); 
