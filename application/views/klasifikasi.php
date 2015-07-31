@@ -19,35 +19,36 @@
     display: block;
 }
 </style>
-<div class="row" style="margin-top:10px;margin-bottom:10px">
-	<div class="col-lg-3">
-		<div class="panel panel-primary">
-			<div class="panel-body" style="min-height:460px;">
-				<div class="col-lg-12" style="min-height:300px;">
-					<img src="<?=base_url()?>/assets/img/up.jpg" id="foto" class="img-responsive"><br/>
-				</div>
-				<div class="col-lg-12"><hr/>
-					<form id="upload">
-						<div class="form-group">
-							<span class="btn btn-warning btn-block btn-file">
-								Browse Image <input id="gambar" class="btn" type="file" name="userfile" onchange="return preview_gambar();"/>
-							</span>
+<div class="main">
+	<div class="container">
+		<div class="row" style="margin-top:10px;margin-bottom:10px">
+			<div class="col-lg-3">
+				<div class="panel"style="background-color:rgba(255,255,255,0)">
+					<div class="panel-body" style="background-color:rgba(255,255,255,0.6);min-height:460px;">
+						<div class="col-lg-12" style="background-color:rgba(255,255,255,0);min-height:300px;">
+							<img src="<?=base_url()?>/assets/img/up.jpg" id="foto" class="img-responsive"><br/>
 						</div>
-						<button type="button" onClick='return upload_gambar()' class="btn btn-success btn-block">Upload</button>
-					</form>
+						<div class="col-lg-12"><hr/>
+							<form id="upload">
+								<div class="form-group">
+									<span class="btn btn-warning btn-block btn-file">
+										Browse Image <input id="gambar" class="btn" type="file" name="userfile" onchange="return preview_gambar();"/>
+									</span>
+								</div>
+								<button type="button" onClick='return upload_gambar()' class="btn btn-success btn-block">Upload</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="col-lg-9">
-		<div class="panel panel-primary">
-			<div class="panel-body" style="min-height:460px">
-				<h3 style="text-align:center">Result</h3><hr/>
-				<div id="load"></div>
+			<div class="col-lg-9" style="background-color:rgba(255,255,255,0.7);min-height:460px">
+					<h3 style="text-align:center">Result</h3><hr/>
+					<div id="load"></div>
 			</div>
 		</div>
 	</div>
 </div>
+
 <script src="<?php echo $this->config->item('theme_url');?>global/plugins/jquery.min.js" type="text/javascript"></script>
 <script>
 	var vektor;
