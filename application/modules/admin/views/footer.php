@@ -2,7 +2,7 @@
 		<!-- BEGIN FOOTER -->
 		<div class="page-footer">
 			<div class="page-footer-inner">
-				 2014 &copy; Aplikasi Mangga by Nur Hidayatullah.
+				 2015 &copy; Universitas Bhayangkara Surabaya.
 			</div>
 			<div class="scroll-to-top">
 				<i class="icon-arrow-up"></i>

@@ -26,8 +26,22 @@ class mangga_model extends CI_Model {
 		return $query->num_rows();
 	}
 	
+	function getDataByBiner($data){
+		$this->db->where('biner',$data);
+		$query = $this->db->get('mangga');
+		if($query->row_array()>0){
+			return $query->row_array();
+		}
+		return NULL;
+		
+	}
 	function add($data) {
         $this->db->insert('mangga', $data);
+		return (($this->db->affected_rows()>0)?TRUE:FALSE);
+    }
+	
+	function saveLog($data) {
+        $this->db->insert('data_uji', $data);
 		return (($this->db->affected_rows()>0)?TRUE:FALSE);
     }
 	function delete($id){

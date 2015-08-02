@@ -4,24 +4,15 @@
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
-
-<!-- Head BEGIN -->
 <head>
   <meta charset="utf-8">
-  <title>Metronic Frontend (with Top Bar)</title>
+  <title>Identifikasi Mangga</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <meta content="Metronic Shop UI description" name="description">
-  <meta content="Metronic Shop UI keywords" name="keywords">
-  <meta content="keenthemes" name="author">
-
-  <meta property="og:site_name" content="-CUSTOMER VALUE-">
-  <meta property="og:title" content="-CUSTOMER VALUE-">
-  <meta property="og:description" content="-CUSTOMER VALUE-">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="-CUSTOMER VALUE-"><!-- link to image for socio -->
-  <meta property="og:url" content="-CUSTOMER VALUE-">
+  <meta content="Identifikasi jenis mangga berdasarkan daun" name="description">
+  <meta content="voted percptron" name="keywords">
+  <meta content="Nur Hidayatullah" name="author">
 
   <link rel="shortcut icon" href="favicon.ico">
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
@@ -47,12 +38,8 @@
   <link href="<?php echo $this->config->item('theme_url');?>frontend/layout/css/custom.css" rel="stylesheet">
   <!-- Theme styles END -->
 </head>
-<!-- Head END -->
-
-<!-- Body BEGIN -->
 <body class="corporate" style="background-image: url('<?php echo $this->config->item('theme_url');?>img/mango2.jpg')">
 
-    <!-- BEGIN TOP BAR -->
     <div class="pre-header" style="background-color:rgba(255,255,255,0.3)">
         <div class="container">
             <div class="row">
@@ -69,15 +56,12 @@
 						
                     </ul>
                 </div>
-                <!-- END TOP BAR MENU -->
             </div>
         </div>        
     </div>
-    <!-- END TOP BAR -->
-    <!-- BEGIN HEADER -->
     <div class="header">
       <div class="container">
-        <a class="site-logo" href="index.html"><img src="<?php echo $this->config->item('theme_url');?>frontend/layout/img/logos/logo-corp-red.png" alt="Metronic FrontEnd"></a>
+        <a class="site-logo" href="index.html">Identifikasi Jenis Mangga</a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 		
@@ -94,40 +78,26 @@
         </div>
       </div>
     </div>
+	
     <?php $this->load->view($content) ?>
-
-    <!-- BEGIN FOOTER -->
+	
     <div class="footer">
       <div class="container">
         <div class="row">
-          <!-- BEGIN COPYRIGHT -->
           <div class="col-md-6 col-sm-6 padding-top-10">
-            2014 © Metronic Shop UI. ALL Rights Reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            2015 © <a href="#">Universitas Bhayangkara Surabaya.</a>
           </div>
-          <!-- END COPYRIGHT -->
-          <!-- BEGIN PAYMENTS -->
           <div class="col-md-6 col-sm-6">
             <ul class="social-footer list-unstyled list-inline pull-right">
               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-              <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
               <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-              <li><a href="#"><i class="fa fa-skype"></i></a></li>
               <li><a href="#"><i class="fa fa-github"></i></a></li>
-              <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-              <li><a href="#"><i class="fa fa-dropbox"></i></a></li>
             </ul>  
           </div>
-          <!-- END PAYMENTS -->
         </div>
       </div>
     </div>
 	<input type="hidden" id="url" value="<?php echo $this->config->item('theme_url');?>"/>
-    <!-- END FOOTER -->
-
-    <!-- Load javascripts at bottom, this will reduce page load time -->
-    <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
     <!--[if lt IE 9]>
     <script src="<?php echo $this->config->item('theme_url');?>global/plugins/respond.min.js"></script>
     <![endif]--> 
@@ -155,11 +125,7 @@
             Layout.initOWL();
             RevosliderInit.initRevoSlider();
             Layout.initTwitter();
-            //Layout.initFixHeaderWithPreHeader(); /* Switch On Header Fixing (only if you have pre-header) */
-            //Layout.initNavScrolling(); 
         });
     </script>
-    <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
-<!-- END BODY -->
 </html>

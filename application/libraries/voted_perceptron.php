@@ -96,39 +96,9 @@ class Voted_perceptron{
 			$out[$y] = $this->sign($out[$y]);
 		}
 		$print .= $t;
-		echo $print;
-		print_r($out);
-		/* foreach($v as $v){
-			for($y = 0;$y < 3;$y++){
-				
-				for($x = 0;$x < count($data);$x++){
-					$out[$y] = $out[$y]+($data[$x]*$v[$y][$x]);
-				}
-				$out[$y] = $this->sign($out[$y])*$v[3];
-			}
-			print_r($out);
-		} */
+		
+		//echo $print;
+		return $out;
 	}
-	/* function classifier($data,$v,$c,$k){ // fungsi untuk klasifikasi
-		$s = 0;
-		for($x = 0;$x <= $k;$x++){
-			$y_in = 0;
-			$row = 0;
-			for($y=0;$y<count($v[$x]);$y++){
-				$y_in = $y_in +($v[$x][$y]*$data[$y]);
-				$row++;
-			}
-			$s = $s +($c[$x]*$this->sign($y_in));
-		}
-		return $this->sign($s);
-	} */
 }
-/*
-$uji = array(array(-1,-1),array(-1,1),array(1,-1),array(1,1));
-for($x=0;$x<count($uji);$x++){
-	$hasil = $voted->classifier($uji[$x],$out['v'],$out['c'],$out['k']);
-	echo "Data ".($x+1)." ";
-	print_r($uji[$x]);
-	echo "  Hasil : ".$hasil."</br>";
-} */
 ?>

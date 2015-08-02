@@ -6,13 +6,25 @@ class Classification extends CI_Controller{
 		$this->load->helper('url');
 	}
 	
-	function index(){
+	function index($biner=null){
 		$data['content'] = "klasifikasi";
 		$menu = array(
 			array('name'=>'Home','url'=>base_url(),'class'=>''),
 			array('name'=>'Classification','url'=>base_url('classification'),'class'=>'active'),
 		);
 		$data['menu'] = $menu;
+		
+		$this->load->model('mangga/mangga_model');
+		$salah = array(
+			'nama_mangga'	=>'Not Found',
+			'foto'			=>'lady.png',
+			'keterangan'	=>'Jenis daun tidak dikenali.'
+		);
+		if($biner){
+			$mangga = $this->mangga_model->getDataByBiner(substr($biner,1,5));
+			$result = ($mangga) ? $mangga : $salah;
+		}
+		$data['data'] = ($biner)?$result:null;
 		$this->load->view('index',$data);
 	}
 	
@@ -65,9 +77,32 @@ class Classification extends CI_Controller{
 	function calculate(){
 		$data = $_POST['dta'];
 		$vektor = $_POST['vektor'];
-		$data = array($data['means_g'],$data['varian_g'],$data['standev_g'],$data['compactness'],$data['circularity']);
+		$data_uji = array($data['means_g'],$data['varian_g'],$data['standev_g'],$data['compactness'],$data['circularity']);
 		$this->load->library('voted_perceptron');
-		$out = $this->voted_perceptron->classifier($data,$vektor);
+		$out = $this->voted_perceptron->classifier($data_uji,$vektor);
+		$result = "1";
+		$res = "";
+		foreach($out as $o){
+			if($o==-1){
+				$result.='0';
+				$res .="-1";
+			}else if($o==1){
+				$result .='1';
+				$res .="1";
+			}
+		}
+		$this->load->model('mangga/mangga_model');
+		$log = array(
+			'mean_g'=>$data['means_g'],
+			'momen_g'=>$data['varian_g'],
+			'dev_g'=>$data['standev_g'],
+			'circularity'=>$data['circularity'],
+			'compactness'=>$data['compactness'],
+			'output'=>$res,
+			'nama_file'=>$data['file']
+		);
+		$this->mangga_model->saveLog($log);
+		echo $result;
 	}
 }
 ?>
