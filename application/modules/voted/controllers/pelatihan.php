@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 class Pelatihan extends CI_Controller{
-	
+	var $id = 26;
 	function __construct(){
 		parent::__construct();
 		$this->load->helper('url');
@@ -13,8 +13,8 @@ class Pelatihan extends CI_Controller{
 		$this->load->model('admin/menu_model');
 	}
 	function index($menu='',$msg=''){
-		$data['menu']=$menu;
-		$data['priv'] = $this->menu_model->get_priv($menu,$this->session->userdata('kode_group'));
+		$data['menu'] = $this->id;
+		$data['priv'] = $this->menu_model->get_priv($this->id,$this->session->userdata('kode_group'));
 		$data['msg'] = $msg;
 		$data['k'] = 1;
 		$this->load->view('admin/header');

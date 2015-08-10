@@ -85,13 +85,13 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-sm-6 padding-top-10">
-            2015 © <a href="#">Universitas Bhayangkara Surabaya.</a>
+            2015 © <a href="http://www.ubhara.ac.id/v3/">Universitas Bhayangkara Surabaya.</a>
           </div>
           <div class="col-md-6 col-sm-6">
             <ul class="social-footer list-unstyled list-inline pull-right">
-              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-              <li><a href="#"><i class="fa fa-github"></i></a></li>
+              <li><a href="https://www.facebook.com/nur.h.aja3"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="https://www.linkedin.com/profile/view?id=415095790&trk=nav_responsive_tab_profile_pic"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="https://github.com/nurhidayatullah"><i class="fa fa-github"></i></a></li>
             </ul>  
           </div>
         </div>

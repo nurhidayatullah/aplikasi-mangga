@@ -29,12 +29,11 @@ class File_upload extends CI_Controller{
 			$upload['status'] = 1;
 			$upload['jenis'] = $this->input->post('jenis');
 			$this->image_lib->resize();
-			$this->image_proc->read_file($upload['full_path']);
-			$this->image_proc->norm();
-		//	$this->image_proc->cetak_tabel_rgb();
-			$this->image_proc->set_area();
-		//	$this->image_proc->cetak_sobel();
-			$this->image_proc->set_keliling();
+			$this->image_proc->read_file($upload['file_path'],$upload['file_name']);
+			$upload['history'] = $upload['file_name'];
+			$upload['history'] .= ','.$this->image_proc->norm();
+			$upload['history'] .= ','.$this->image_proc->set_area();
+			$upload['history'] .= ','.$this->image_proc->set_keliling();
 			$upload['circularity'] = $this->image_proc->get_circularity();
 			$upload['compactness'] = $this->image_proc->get_compactness();
 			echo json_encode($upload);
@@ -50,7 +49,7 @@ class File_upload extends CI_Controller{
 	function get_data(){
 		$data = $_POST['dt'];
 		$x = json_decode($data);
-		$this->image_proc->read_file($x->full_path);
+		$this->image_proc->read_file($x->file_path,$x->file_name);
 		$histogram = $this->image_proc->histogram();
 		$means = $this->image_proc->get_means($histogram);
 		$varian = $this->image_proc->get_varian($means);
@@ -62,7 +61,8 @@ class File_upload extends CI_Controller{
 			'varian_g' => round($varian['G'],4),
 			'circularity' => round($x->circularity,4),
 			'compactness' => round($x->compactness,4),
-			'file' => $x->file_name
+			'file' => $x->file_name,
+			'history' =>$x->history
 		);
 		echo json_encode($fitur);
 	}

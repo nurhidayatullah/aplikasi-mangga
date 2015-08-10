@@ -32,6 +32,7 @@ class pelatihan_model extends CI_Model {
 	}
 	
 	function get_vektor(){
+		$this->db->where('c !=',0);
 		$query = $this->db->get('pelatihan');
 		if($query->num_rows()>0){
 			$result = array();$x = 0;

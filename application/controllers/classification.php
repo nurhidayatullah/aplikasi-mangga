@@ -1,9 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 class Classification extends CI_Controller{
-	
+	var $data;
 	function __construct(){
 		parent::__construct();
 		$this->load->helper('url');
+		
 	}
 	
 	function index($biner=null){
@@ -21,10 +22,24 @@ class Classification extends CI_Controller{
 			'keterangan'	=>'Jenis daun tidak dikenali.'
 		);
 		if($biner){
-			$mangga = $this->mangga_model->getDataByBiner(substr($biner,1,5));
+			$mangga = $this->mangga_model->getDataByBiner(substr($biner,1,3));
+			$data['id'] = $biner;
 			$result = ($mangga) ? $mangga : $salah;
 		}
 		$data['data'] = ($biner)?$result:null;
+		$this->load->view('index',$data);
+	}
+	
+	function detail($biner = null){
+		$data['content'] = "detail";
+		$data['menu'] = array(
+			array('name'=>'Home','url'=>base_url(),'class'=>''),
+			array('name'=>'Classification','url'=>base_url('classification'),'class'=>'active'),
+		);
+		$id = substr($biner,4,10);
+		$data['biner'] = $biner;
+		$this->load->model('mangga/mangga_model');
+		$data['data'] = $this->mangga_model->getDetailDataUji($id);
 		$this->load->view('index',$data);
 	}
 	
@@ -58,10 +73,11 @@ class Classification extends CI_Controller{
 			$upload['status'] = 1;
 			$upload['jenis'] = $this->input->post('jenis');
 			$this->image_lib->resize();
-			$this->image_proc->read_file($upload['full_path']);
-			$this->image_proc->norm();
-			$this->image_proc->set_area();
-			$this->image_proc->set_keliling();
+			$this->image_proc->read_file($upload['file_path'],$upload['file_name']);
+			$upload['history'] = $upload['file_name'];
+			$upload['history'] .= ','.$this->image_proc->norm();
+			$upload['history'] .= ','.$this->image_proc->set_area();
+			$upload['history'] .= ','.$this->image_proc->set_keliling();
 			$upload['circularity'] = $this->image_proc->get_circularity();
 			$upload['compactness'] = $this->image_proc->get_compactness();
 			echo json_encode($upload);
@@ -99,10 +115,11 @@ class Classification extends CI_Controller{
 			'circularity'=>$data['circularity'],
 			'compactness'=>$data['compactness'],
 			'output'=>$res,
-			'nama_file'=>$data['file']
+			'nama_file'=>$data['file'],
+			'history'=>$data['history']
 		);
-		$this->mangga_model->saveLog($log);
-		echo $result;
+		$id = $this->mangga_model->saveLog($log);
+		echo $result.$id;
 	}
 }
 ?>

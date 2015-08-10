@@ -96,7 +96,6 @@ class Voted_perceptron{
 			$out[$y] = $this->sign($out[$y]);
 		}
 		$print .= $t;
-		
 		//echo $print;
 		return $out;
 	}

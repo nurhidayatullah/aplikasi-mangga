@@ -2,8 +2,8 @@
 class Image_proc{
 	var $tresh = 80;
 	var $citra;
-	var $citra_asli;
 	var $file;
+	var $path;
 	var $ukuran;
 	var $keliling;
 	var $area;
@@ -91,16 +91,16 @@ class Image_proc{
 		echo $out;
 	}
 	
-	function read_file($file){
-		$this->citra = imagecreatefromjpeg($file);
-		$this->citra_asli = $this->citra;
+	function read_file($path,$file){
+		$this->citra = imagecreatefromjpeg($path.$file);
+		$this->path = $path;
 		$this->file = $file;
-		$this->ukuran = getimagesize($file);
+		$this->ukuran = getimagesize($path.$file);
 	}
 	
 	public function save($file,$path){ 
 		imagejpeg($file,$path, 100);
-		imagedestroy($file);
+	//	imagedestroy($file);
 	}
 	
 	function norm(){
@@ -142,6 +142,8 @@ class Image_proc{
 			}
 		}
 		$this->citra = $dest;
+		$this->save($this->citra,$this->path."norm-".$this->file);
+		return "norm-".$this->file;
 	}
 	
 	public function histogram(){
@@ -248,12 +250,11 @@ class Image_proc{
 	}
 	
 	function set_keliling(){
-		$this->sobel();
+		return $this->sobel();
 	}
 	
 	function set_area(){
-		$this->area = $this->get_area();
-		$this->save($this->citra,$this->file);
+		return $this->get_area();
 	}
 	
 	function get_circularity(){
@@ -324,12 +325,11 @@ class Image_proc{
 		for($x = 0;$x < $this->ukuran[0];$x++){
 			for($y = 0;$y < $this->ukuran[1];$y++){
 				$gray = $this->get_rgb(imagecolorat($this->citra,$x,$y));
-				$rgb = $this->get_rgb(imagecolorat($this->citra_asli,$x,$y));
 				if($gray['g'] > $gray['b'] && $gray['g'] > $this->tresh){
 					$bw = 255;
-					$r = $rgb['r'];
-					$g = $rgb['g'];
-					$b = $rgb['b'];
+					$r = $gray['r'];
+					$g = $gray['g'];
+					$b = $gray['b'];
 				}else{
 					$bw = 0;
 					$r = 0;
@@ -343,7 +343,9 @@ class Image_proc{
 			}
 		}
 		$this->citra = $front;
-		return $area;
+		$this->area = $area;
+		$this->save($this->citra,$this->path."area-".$this->file);
+		return "area-".$this->file;
 	}
 	function cetak_sobel(){
 		$img = $this->area;
@@ -420,7 +422,9 @@ class Image_proc{
 			}
         }
 		$this->keliling = $final;
-		$this->keliling = $this->thinning();
+		$keliling = $this->thinning();
+		$this->save($keliling,$this->path."keliling-".$this->file);
+		return "keliling-".$this->file;
 	}
 	public function prewitt(){
 		error_reporting(0);
@@ -584,7 +588,8 @@ class Image_proc{
 				imagesetpixel($final,$x,$y,$new_gray); 
             }
         }
-		return $imgval;
+		$this->keliling = $imgval;
+		return $final;
 	}
 }
 ?>

@@ -42,7 +42,7 @@ class mangga_model extends CI_Model {
 	
 	function saveLog($data) {
         $this->db->insert('data_uji', $data);
-		return (($this->db->affected_rows()>0)?TRUE:FALSE);
+		return (($this->db->affected_rows()>0)?$this->db->insert_id():FALSE);
     }
 	function delete($id){
 		$this->db->where('kode_mangga',$id);
@@ -58,6 +58,15 @@ class mangga_model extends CI_Model {
 				$foto = $data['foto'];
 			}
 			return $foto;
+		}
+		return NULL;
+	}
+	
+	function getDetailDataUji($id){
+		$this->db->where('kode_data',$id);
+		$query = $this->db->get('data_uji');
+		if($query->row_array()>0){
+			return $query->row_array();
 		}
 		return NULL;
 	}

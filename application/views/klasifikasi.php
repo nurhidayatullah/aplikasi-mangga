@@ -65,10 +65,11 @@
 								<div class="col-lg-12">
 									<div class="alert alert-info" role="alert">
 										<div class="row">
+											<div class="col-lg-12"><h4 style="text-align:center"><strong>Hasil</h4></strong><hr/></div>
 											<div class="col-lg-3">
 												<img src="<?=base_url()?>/assets/mangga/<?php echo $data['foto'];?>" id="foto" class="img-responsive">
 											</div>
-											<div class="col-lg-9" style="overflow:hidden">
+											<div class="col-lg-9">
 												<table class="table">
 													<tr>
 														<td>Jenis Mangga</td>
@@ -82,6 +83,7 @@
 											</div>
 										</div>
 									</div>
+									<a href="<?php echo base_url('classification/detail/'.$id);?>" class="btn blue pull-right"> Detail <i class="m-icon-swapright m-icon-white"></i></a>
 								</div>
 								<?php
 								}else{
