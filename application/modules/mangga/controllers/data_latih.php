@@ -28,7 +28,8 @@ class Data_latih extends Admin_Controller {
 			'momen_g' =>$data['varian_g'],
 			'circularity' => $data['circularity'],
 			'compactness' =>$data['compactness'],
-			'nama_file' => $data['file']
+			'nama_file' => $data['file'],
+			'history' =>$data['history']
 		);
 		$this->data_latih_model->save($fitur);
 	}
