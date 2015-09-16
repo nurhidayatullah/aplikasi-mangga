@@ -14,7 +14,17 @@ class data_latih_model extends CI_Model {
 		}
 		return NULL;
 	}
-	
+	function AllDataUji(){
+		$query = $this->db->get('data_uji');
+		if($query->row_array()>0){
+			return $query->result_array();
+		}
+		return NULL;
+	}
+	function saveUji($data){
+		$this->db->insert('uji_coba', $data);
+		return (($this->db->affected_rows()>0)?TRUE:FALSE);
+	}
 	function getCount(){
 		$query = $this->db->get('data_latih'); 
 		return $query->num_rows();
@@ -22,6 +32,11 @@ class data_latih_model extends CI_Model {
 	function delete($id){
 		$this->db->where('kode_data',$id);
 		$this->db->delete('data_latih'); 
+		return (($this->db->affected_rows()>0)?TRUE:FALSE);
+	}
+	function updateData($data,$id,$table){
+		$this->db->where('kode_data',$id);
+		$this->db->update($table, $data);
 		return (($this->db->affected_rows()>0)?TRUE:FALSE);
 	}
 	function get_foto($id){

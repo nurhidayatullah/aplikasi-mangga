@@ -93,6 +93,11 @@ class Classification extends CI_Controller{
 	function calculate(){
 		$data = $_POST['dta'];
 		$vektor = $_POST['vektor'];
+		/* $data['means_g']	= ($data['means_g']-25.7141)/(204.9292-25.7141);
+		$data['varian_g']	= ($data['varian_g']-157.1063)/(18604.4907-157.1063);
+		$data['standev_g']	= ($data['standev_g']-12.5342)/(136.3983-12.5342);
+		$data['circularity']= $data['circularity'];
+		$data['compactness']= ($data['compactness']-32.4717)/(940.0924-32.4717); */
 		$data_uji = array($data['means_g'],$data['varian_g'],$data['standev_g'],$data['compactness'],$data['circularity']);
 		$this->load->library('voted_perceptron');
 		$out = $this->voted_perceptron->classifier($data_uji,$vektor);
@@ -120,6 +125,84 @@ class Classification extends CI_Controller{
 		);
 		$id = $this->mangga_model->saveLog($log);
 		echo $result.$id;
+	}
+	function normalizationDataLatih(){
+		// max mean_g 204.9292,momen 18604.4907,dev 136.3983,compactness 940.0924,circularity 0.4665
+		// min mean 25.7141,momen 157.1063,dev 12.5342,compactness 32.4717, circularity 0.0134
+		$this->load->model('mangga/data_latih_model');
+		$data_latih = $this->data_latih_model->All();
+		foreach($data_latih as $dt){
+			$data['mean_g'] 	= ($dt['mean_g']-25.7141)/(204.9292-25.7141);
+			$data['momen_g']	= ($dt['momen_g']-157.1063)/(18604.4907-157.1063);
+			$data['dev_g']		= ($dt['dev_g']-12.5342)/(136.3983-12.5342);
+			$data['circularity']= $dt['circularity'];
+			$data['compactness']= ($dt['compactness']-32.4717)/(940.0924-32.4717);
+			$id = $dt['kode_data'];
+			$this->data_latih_model->updateData($data,$id,'data_latih');
+		}
+	}
+	function normalizationDataUji(){
+		// max mean_g 204.9292,momen 18604.4907,dev 136.3983,compactness 940.0924
+		// min mean 25.7141,momen 157.1063,dev 12.5342,compactness 32.4717
+		$this->load->model('mangga/data_latih_model');
+		$data_latih = $this->data_latih_model->AllDataUji();
+		foreach($data_latih as $dt){
+			$data['mean_g'] 	= ($dt['mean_g']-25.7141)/(204.9292-25.7141);
+			$data['momen_g']	= ($dt['momen_g']-157.1063)/(18604.4907-157.1063);
+			$data['dev_g']		= ($dt['dev_g']-12.5342)/(136.3983-12.5342);
+			$data['circularity']= $dt['circularity'];
+			$data['compactness']= ($dt['compactness']-32.4717)/(940.0924-32.4717);
+			$id = $dt['kode_data'];
+			$this->data_latih_model->updateData($data,$id,'data_uji');
+		}
+	}
+	function testing(){
+		$this->load->model('mangga/data_latih_model');
+		$data_latih = $this->data_latih_model->AllDataUji();
+		$this->load->library('voted_perceptron');
+		$this->load->model('voted/pelatihan_model');
+		$vektor = $this->pelatihan_model->get_vektor();
+		$benar = 0;
+		foreach($data_latih as $dt){
+			$data_uji = array($dt['mean_g'],$dt['momen_g'],$dt['dev_g'],$dt['compactness'],$dt['circularity']);
+			$out = $this->voted_perceptron->classifier($data_uji,$vektor);
+			$label = $dt['target'];
+			$target = array();
+			for($x = 0; $x < count($out); $x++){
+				if($label){
+					$target[$x] = ($label{$x}==1)?(int)$label{$x}:-1;
+				}else{
+					$target[$x] = ($out[$x]==1)?1:-1;
+				}
+				$out1[$x] = ($out[$x]==1)?1:0;
+			}
+			
+			$class = array(
+				'010'=>'Mangga Golek','011'=>'Mangga Manalagi',
+				'100'=>'Mangga Madu','101'=>'Mangga Curut',
+				'110'=>'Mangga Gadung','000'=>'Bukan Mangga','111'=>'Bukan Mangga'
+				);
+
+			$out_biner = implode($out1);
+			$out = implode($out);
+			$target = implode($target);
+			//echo $target." ".$out."<br/>";
+			$hasil = ($out==$target)?1:0;
+			$result['data_id']	= $dt['kode_data'];
+			$result['output']	= $out;
+			$result['target']	= $target;
+			$result['result']	= $hasil;
+			$result['target_name'] = ($label)?$class[$label]:$class['000'];
+			$result['output_name'] = (array_key_exists($out_biner,$class))?$class[$out_biner]:$class['000'];
+			$this->data_latih_model->saveUji($result);
+			$benar = ($hasil)?$benar+1:$benar;
+		}
+		echo "done <br/>";
+		$akurasi = ($benar/count($data_latih))*100;
+		echo 'Akurasi : '.$akurasi." % <br/>";
+		echo 'Total Benar : '.$benar." Data <br/>";
+		echo 'Total Data : '.count($data_latih)." Data <br/>";
+		
 	}
 }
 ?>
