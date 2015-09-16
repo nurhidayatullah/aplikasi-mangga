@@ -93,11 +93,11 @@ class Classification extends CI_Controller{
 	function calculate(){
 		$data = $_POST['dta'];
 		$vektor = $_POST['vektor'];
-		/* $data['means_g']	= ($data['means_g']-25.7141)/(204.9292-25.7141);
+		$data['means_g']	= ($data['means_g']-25.7141)/(204.9292-25.7141);
 		$data['varian_g']	= ($data['varian_g']-157.1063)/(18604.4907-157.1063);
 		$data['standev_g']	= ($data['standev_g']-12.5342)/(136.3983-12.5342);
 		$data['circularity']= $data['circularity'];
-		$data['compactness']= ($data['compactness']-32.4717)/(940.0924-32.4717); */
+		$data['compactness']= ($data['compactness']-32.4717)/(940.0924-32.4717);
 		$data_uji = array($data['means_g'],$data['varian_g'],$data['standev_g'],$data['compactness'],$data['circularity']);
 		$this->load->library('voted_perceptron');
 		$out = $this->voted_perceptron->classifier($data_uji,$vektor);
